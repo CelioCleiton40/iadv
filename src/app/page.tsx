@@ -5,40 +5,39 @@ import Link from "next/link";
 import { MdGavel, MdInfo, MdArticle, MdQuestionAnswer } from "react-icons/md";
 import { motion } from "framer-motion";
 import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="flex-1 grid grid-rows-[20px_1fr] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-sans bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
-        {/* Your existing main content */}
-        <main className="flex flex-col gap-12 row-start-2 items-center sm:items-start text-center sm:text-left max-w-2xl w-full">
-          {/* Logo with animation */}
+      <Header />
+      <div className="flex-1 grid grid-rows-[20px_1fr] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-serif bg-gradient-to-b from-slate-100 to-white dark:from-slate-900 dark:to-slate-800">
+        <main className="flex flex-col gap-12 row-start-2 items-center sm:items-start text-center sm:text-left max-w-3xl w-full">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", duration: 0.8 }}
-            className="flex items-center"
+            className="flex items-center gap-4"
           >
-            <MdGavel size={48} className="dark:text-white text-slate-800" />
+            <MdGavel size={64} className="dark:text-blue-500 text-blue-700" />
+            <h1 className="text-4xl font-semibold text-slate-800 dark:text-slate-100">
+              iAdv <span className="text-blue-700 dark:text-blue-500">Manager</span>
+            </h1>
           </motion.div>
 
-          {/* Animated introduction text */}
-          <motion.ol
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="list-inside list-decimal text-lg font-light space-y-4 text-slate-700 dark:text-slate-200"
+            className="text-xl font-light space-y-6 text-slate-700 dark:text-slate-200"
           >
-            <li>
-              Precisa de assistência jurídica? Entre em contato conosco ou
-              explore nossos serviços.
-            </li>
-            <li>
-              Oferecemos consultoria especializada em diversas áreas do direito.
-            </li>
-          </motion.ol>
+            <p className="leading-relaxed">
+              Simplifique a gestão do seu escritório de advocacia. 
+              Gerencie processos, prazos, clientes e documentos em uma única plataforma 
+              intuitiva e eficiente.
+            </p>
+          </motion.div>
 
-          {/* Animated buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -49,56 +48,54 @@ export default function Home() {
               asChild
               variant="default"
               size="lg"
-              className="bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 transition-all duration-300"
+              className="bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-300"
             >
-              <Link href="/contato" className="flex items-center gap-2 px-8">
-                Entre em Contato
+              <Link href="/dashboard" className="flex items-center gap-2 px-8 text-lg">
+                Acessar Sistema
               </Link>
             </Button>
             <Button
               asChild
               variant="outline"
               size="lg"
-              className="border-slate-300 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800 transition-all duration-300"
+              className="border-blue-700 text-blue-700 hover:bg-blue-50 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-900/20 transition-all duration-300"
             >
-              <Link href="/servicos" className="flex items-center gap-2 px-8">
-                Conheça Nossos Serviços
+              <Link href="/recursos" className="flex items-center gap-2 px-8 text-lg">
+                Explorar Recursos
               </Link>
             </Button>
           </motion.div>
         </main>
 
-        {/* Animated footer */}
         <motion.footer
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.8 }}
-          className="row-start-3 flex gap-8 flex-wrap items-center justify-center text-sm text-slate-600 dark:text-slate-400"
+          className="row-start-3 flex gap-12 flex-wrap items-center justify-center text-base text-slate-600 dark:text-slate-400"
         >
           <Link
-            className="flex items-center gap-2 hover:text-slate-900 dark:hover:text-white transition-colors duration-300"
-            href="/sobre"
+            className="flex items-center gap-2 hover:text-blue-700 dark:hover:text-blue-500 transition-colors duration-300"
+            href="/tutorial"
           >
-            <MdInfo size={18} />
-            Sobre Nós
+            <MdInfo size={20} />
+            Tutorial
           </Link>
           <Link
-            className="flex items-center gap-2 hover:text-slate-900 dark:hover:text-white transition-colors duration-300"
-            href="/blog"
+            className="flex items-center gap-2 hover:text-blue-700 dark:hover:text-blue-500 transition-colors duration-300"
+            href="/documentacao"
           >
             <MdArticle size={18} />
-            Blog Jurídico
+            Documentação
           </Link>
           <Link
-            className="flex items-center gap-2 hover:text-slate-900 dark:hover:text-white transition-colors duration-300"
-            href="/faq"
+            className="flex items-center gap-2 hover:text-blue-700 dark:hover:text-blue-500 transition-colors duration-300"
+            href="/suporte"
           >
             <MdQuestionAnswer size={18} />
-            Perguntas Frequentes
+            Suporte
           </Link>
         </motion.footer>
       </div>
-      );
       <Footer />
     </div>
   );
