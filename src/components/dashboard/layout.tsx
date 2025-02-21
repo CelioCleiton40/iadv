@@ -1,12 +1,19 @@
-import { ReactNode } from "react"
-import { MdDashboard, MdPeople, MdFolder, MdCalendarMonth, MdAttachMoney, MdDescription, MdSettings } from "react-icons/md"
-import Link from "next/link"
+"use client";
+
+import { ReactNode, useState } from "react";
+import { MdDashboard, MdPeople, MdFolder, MdCalendarMonth, MdAttachMoney, MdDescription, MdSettings, MdMenu } from "react-icons/md";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface DashboardLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const pathname = usePathname();
+
   const menuItems = [
     { icon: MdDashboard, label: "Dashboard", href: "/dashboard" },
     { icon: MdFolder, label: "Casos", href: "/dashboard/casos" },
@@ -14,35 +21,61 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     { icon: MdCalendarMonth, label: "Agenda", href: "/dashboard/agenda" },
     { icon: MdAttachMoney, label: "Financeiro", href: "/dashboard/financeiro" },
     { icon: MdDescription, label: "Documentos", href: "/dashboard/documentos" },
-  ]
+  ];
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-        <div className="flex h-16 items-center border-b border-slate-200 px-6 dark:border-slate-800">
-          <span className="text-xl font-semibold">iAdv</span>
-        </div>
-        <nav className="space-y-1 p-4">
-          {menuItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+      <aside
+        className={`fixed lg:static inset-y-0 left-0 z-50 bg-white dark:bg-slate-800 transform transition-all duration-300 
+          ${isCollapsed ? "w-16" : "w-64"} border-r border-slate-200 dark:border-slate-700`}
+      >
+        <div className="flex flex-col h-full">
+          <div className="h-16 flex items-center justify-between px-4">
+            {!isCollapsed && <span className="text-lg font-bold">iAdv</span>}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="ml-auto"
             >
-              <item.icon className="h-5 w-5" />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+              <MdMenu className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <nav className="flex-1 p-2 space-y-1">
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                  pathname === item.href
+                    ? "bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+                }`}
+              >
+                <item.icon className="h-5 w-5" />
+                {!isCollapsed && <span>{item.label}</span>}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 p-8">
-        <div className="mx-auto max-w-7xl">
+      <main className={`flex-1 transition-all duration-300 ${isCollapsed ? "lg:ml-16" : "lg:ml-64"}`}>
+        <div className="container mx-auto px-4 py-8">
           {children}
         </div>
       </main>
+
+      {/* Mobile Overlay */}
+      {!isCollapsed && (
+        <div
+          className="fixed inset-0 bg-black/50 lg:hidden z-40"
+          onClick={() => setIsCollapsed(true)}
+        />
+      )}
     </div>
-  )
+  );
 }
