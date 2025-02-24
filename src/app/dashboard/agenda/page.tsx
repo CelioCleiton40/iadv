@@ -3,8 +3,9 @@
 import { Header } from "@/components/header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { NovoCompromissoDialog } from "@/components/agenda/novo-compromisso-dialog";
+import { DetalhesCompromissoDialog } from "@/components/agenda/detalhes-compromisso-dialog";
+
 import {
   Select,
   SelectContent,
@@ -51,10 +52,7 @@ export default function Agenda() {
                 onSelect={setDate}
                 className="rounded-md border"
               />
-              <Button className="w-full flex items-center gap-2">
-                <MdAdd size={18} />
-                Novo Compromisso
-              </Button>
+              <NovoCompromissoDialog />
             </div>
           </Card>
 
@@ -104,6 +102,17 @@ export default function Agenda() {
                     <Button variant="outline" size="sm">
                       Ver Detalhes
                     </Button>
+                    <DetalhesCompromissoDialog
+                      compromisso={{
+                        titulo: "Audiência Trabalhista",
+                        tipo: "Audiência",
+                        data: "2024-01-20",
+                        horario: "09:00",
+                        cliente: "João Silva",
+                        processo: "1234-56.2024.5.15.0001",
+                        descricao: "Audiência de instrução e julgamento"
+                      }}
+                    />
                   </div>
                 </Card>
 

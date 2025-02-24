@@ -1,8 +1,9 @@
 import { Card } from "@/components/ui/card"
+import Link from "next/link";
 import { DashboardLayout } from "@/components/dashboard/layout"
 import { MdTrendingUp, MdAccessTime, MdPeople, MdAttachMoney } from "react-icons/md"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { MdPerson } from "react-icons/md"
+import { MdPerson, MdSettings, MdLogout } from "react-icons/md"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default function DashboardPage() {
@@ -17,28 +18,40 @@ export default function DashboardPage() {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex items-center gap-2 sm:gap-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+              <div className="flex items-center gap-2 sm:gap-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-all duration-200 hover:shadow-md">
                 <div className="text-right hidden sm:block">
-                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Dr. João Silva</p>
+                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">Dr. João Silva</p>
                   <p className="text-xs text-slate-600 dark:text-slate-400">OAB/SP 123456</p>
                 </div>
-                <Avatar className="h-9 w-9 sm:h-12 sm:w-12 ring-2 ring-offset-2 ring-slate-200 dark:ring-slate-800">
-                  <AvatarImage src="/avatars/user.png" alt="Dr. João Silva" />
-                  <AvatarFallback className="bg-slate-100 dark:bg-slate-800">
-                    <MdPerson className="h-5 w-5" />
+                <Avatar className="h-9 w-9 sm:h-12 sm:w-12 ring-2 ring-offset-2 ring-blue-500 dark:ring-blue-400 transition-transform hover:scale-105">
+                  <AvatarImage src="/avatars/user.png" alt="Dr. João Silva" className="object-cover" />
+                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700">
+                    <MdPerson className="h-5 w-5 text-white" />
                   </AvatarFallback>
                 </Avatar>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem className="sm:hidden">Dr. João Silva</DropdownMenuItem>
-              <DropdownMenuItem>Meu Perfil</DropdownMenuItem>
-              <DropdownMenuItem>Configurações</DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">Sair</DropdownMenuItem>
+            <DropdownMenuContent align="end" className="w-56 p-2">
+              <DropdownMenuItem className="sm:hidden font-medium p-3">Dr. João Silva</DropdownMenuItem>
+              <DropdownMenuItem asChild className="p-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md">
+                <Link href="/dashboard/perfil" className="flex items-center">
+                  <MdPerson className="mr-2 h-4 w-4" />
+                  Meu Perfil
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="p-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md">
+                <Link href="/dashboard/configuracoes" className="flex items-center">
+                  <MdSettings className="mr-2 h-4 w-4" />
+                  Configurações
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-red-600 p-3 cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md flex items-center">
+                <MdLogout className="mr-2 h-4 w-4" />
+                Sair
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-
         {/* Stats Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           <Card className="p-3 sm:p-6">

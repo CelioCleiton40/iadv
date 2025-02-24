@@ -1,55 +1,47 @@
 # iAdv - Sistema de Gestão para Advogados
 
-Um sistema moderno e eficiente para gestão de escritórios de advocacia, desenvolvido com Next.js 14 por Célio Cleiton.
+iAdv é uma plataforma moderna e intuitiva desenvolvida para auxiliar advogados e escritórios de advocacia na gestão de seus processos, clientes e rotinas diárias.
 
-## 🚀 Funcionalidades
-- **Gestão de Clientes**  
-- Cadastro completo de   clientes (PF e PJ)  
-- Histórico de processos   por cliente  
-- Documentação digitalizada  
-- Acompanhamento de status
+## Funcionalidades Principais
 
-- **Gestão de Processos**  
-- Acompanhamento detalhado  
-- Prazos e audiências  
-- Upload de documentos  
-- Histórico de   movimentações  
-- Integração com tribunais
-- **Painel de Controle**  
-- Dashboard intuitivo  
-- Métricas em tempo real  
-- Casos ativos e pendentes  
-- Faturamento mensal  
-- Taxa de sucesso  
-- Próximas audiências  
-- Acompanhamento de   tribunais
+- 📊 Dashboard intuitivo com métricas importantes
+- 👥 Gestão de clientes
+- 📁 Controle de processos
+- 📅 Agenda e prazos
+- 💰 Gestão financeira
+- 📄 Gerenciamento de documentos
+- ⚖️ Análise de magistrados
 
-- **Perfil e Configurações**  
-- Gestão de perfil   profissional  
-- Dados da OAB  
-- Personalização do sistema  
-- Notificações   configuráveis  
-- Backup automático  
+## Tecnologias Utilizadas
 
-- Segurança avançada## 
-💻 Tecnologias- Next.js 14- TypeScript- Tailwind CSS- Shadcn/ui- React Icons- NextAuth.js- Prisma- PostgreSQL## 
+- Next.js 14
+- React
+- TypeScript
+- Tailwind CSS
+- Shadcn/ui
+- React Icons
 
-🛠️ Instalação1. 
+## Requisitos
 
-Clone o repositório:```bashgit clone https://github.com/seu-usuario/iadv.git
+- Node.js 18.17 ou superior
+- npm ou yarn
 
-Instale as dependências:
-bash
-Run
+## Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/celio-cleiton40/iadv.git
+
+# Entre no diretório
+cd iadv
+
+# Instale as dependências
 npm install
-Configure as variáveis de ambiente:
-bash
-Run
-cp .env.example .env.local
-Inicie o servidor de desenvolvimento:
-bash
-Run
+
+# Inicie o servidor de desenvolvimento
 npm run dev
+```
+
 O aplicativo estará disponível em http://localhost:3000
 
 📱 Interface

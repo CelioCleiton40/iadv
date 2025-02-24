@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import { MdDashboard, MdPeople, MdFolder, MdCalendarMonth, MdAttachMoney, MdDescription, MdSettings, MdMenu } from "react-icons/md";
+import { MdDashboard, MdGavel, MdPeople, MdFolder, MdCalendarMonth, MdAttachMoney, MdDescription, MdSettings, MdMenu } from "react-icons/md";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     { icon: MdCalendarMonth, label: "Agenda", href: "/dashboard/agenda" },
     { icon: MdAttachMoney, label: "Financeiro", href: "/dashboard/financeiro" },
     { icon: MdDescription, label: "Documentos", href: "/dashboard/documentos" },
+    { icon: MdGavel, label: "Juízes", href: "/dashboard/juiz-prevento" },
   ];
 
   return (

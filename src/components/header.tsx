@@ -40,15 +40,15 @@ export function Header() {
             variant="ghost"
             className="text-slate-600 hover:text-blue-700 dark:text-slate-300 dark:hover:text-blue-500"
           >
-            <Link href="/login">Entrar</Link>
+            <Link href="/login">Login</Link>
           </Button>
           <Button
             asChild
             className="bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
           >
-            <Link href="/cadastro" className="flex items-center gap-2">
+            <Link href="/register" className="flex items-center gap-2">
               <MdLogin size={18} />
-              Começar
+              Criar conta
             </Link>
           </Button>
         </div>
