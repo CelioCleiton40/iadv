@@ -67,20 +67,41 @@ Relatórios personalizados
 Integração com tribunais
 Gestão de prazos
 Histórico de atividades
+O aplicativo estará disponível em http://localhost:3000
 
-📄 Licença
+## Interface 📱
+- Design moderno e responsivo
+- Modo escuro nativo
+- Interface intuitiva e profissional
+- Componentes reutilizáveis
+- Animações suaves
+- Ícones personalizados
+## Segurança 🔒
+- Autenticação segura
+- Proteção de rotas
+- Criptografia de dados sensíveis
+- Backup automático
+- Conformidade com LGPD
+- Autenticação em duas etapas
+## Recursos Adicionais 🌟
+- Multi-idioma
+- Backup automático
+- Relatórios personalizados
+- Integração com tribunais
+- Gestão de prazos
+- Histórico de atividades
+## Licença 📄
 Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
-👤 Autor
+## Autor 👤
 Célio Cleiton
 
-LinkedIn: Célio Cleiton
-GitHub: @celio-cleiton40
-🤝 Contribuição
+- LinkedIn: Célio Cleiton
+- GitHub: @celio-cleiton40
+## Contribuição 🤝
 Contribuições são sempre bem-vindas! Por favor, leia o CONTRIBUTING.md primeiro.
 
-📞 Suporte
+## Suporte 📞
 Para suporte, envie um email para cleitonfreelance@gmail.com ou abra uma issue no GitHub.
 
-Desenvolvido com ❤️ por Célio Cleiton
-IDE Trae.
+Desenvolvido com ❤️ por Célio Cleiton | IDE Trae

@@ -103,7 +103,7 @@ export default function Recursos() {
               Experimente o iAdv Manager gratuitamente por 14 dias
             </p>
             <a
-              href="/cadastro"
+              href="/register"
               className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
             >
               Começar Agora

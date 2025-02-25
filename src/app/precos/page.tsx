@@ -12,12 +12,13 @@ const plans = [
     price: "R$ 99",
     description: "Ideal para advogados autônomos",
     features: [
-      "Gestão de até 50 processos",
+      "Gestão de até 40 processos",
       "Controle de prazos",
+      "1 usuário",
       "Gestão de clientes básica",
       "Documentos básicos",
-      "Suporte por email"
-    ]
+      "Suporte por email",
+    ],
   },
   {
     name: "Profissional",
@@ -25,14 +26,15 @@ const plans = [
     description: "Perfeito para escritórios pequenos",
     popular: true,
     features: [
-      "Gestão de até 200 processos",
+      "Gestão de até 150 processos",
       "Controle avançado de prazos",
+      "2 usuário",
       "Gestão completa de clientes",
       "Modelos de documentos",
       "Relatórios personalizados",
       "Suporte prioritário",
-      "Integração com Tribunais"
-    ]
+      "Integração com Tribunais",
+    ],
   },
   {
     name: "Empresarial",
@@ -41,20 +43,21 @@ const plans = [
     features: [
       "Processos ilimitados",
       "Automação de documentos",
+      "5 usuário",
       "Gestão financeira avançada",
       "Múltiplas filiais",
       "API disponível",
       "Suporte 24/7",
-      "Treinamento personalizado"
-    ]
-  }
+      "Treinamento personalizado",
+    ],
+  },
 ];
 
 export default function Precos() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1 bg-gradient-to-b from-slate-100 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="container mx-auto px-4 py-16">
           <motion.div
@@ -79,9 +82,11 @@ export default function Precos() {
                 transition={{ delay: index * 0.1 }}
                 className={`
                   relative p-8 rounded-lg border 
-                  ${plan.popular 
-                    ? 'border-blue-500 shadow-lg shadow-blue-500/10' 
-                    : 'border-slate-200 dark:border-slate-700'}
+                  ${
+                    plan.popular
+                      ? "border-blue-500 shadow-lg shadow-blue-500/10"
+                      : "border-slate-200 dark:border-slate-700"
+                  }
                 `}
               >
                 {plan.popular && (
@@ -96,14 +101,21 @@ export default function Precos() {
                   </h3>
                   <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
                     {plan.price}
-                    <span className="text-base font-normal text-slate-600 dark:text-slate-400">/mês</span>
+                    <span className="text-base font-normal text-slate-600 dark:text-slate-400">
+                      /mês
+                    </span>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-400">{plan.description}</p>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    {plan.description}
+                  </p>
                 </div>
 
                 <ul className="space-y-4 mb-8">
                   {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                    <li
+                      key={i}
+                      className="flex items-center gap-2 text-slate-700 dark:text-slate-300"
+                    >
                       <MdCheck className="text-blue-500" />
                       {feature}
                     </li>
@@ -113,8 +125,8 @@ export default function Precos() {
                 <Button
                   className={`w-full ${
                     plan.popular
-                      ? 'bg-blue-600 hover:bg-blue-700'
-                      : 'bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600'
+                      ? "bg-blue-600 hover:bg-blue-700"
+                      : "bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600"
                   }`}
                 >
                   Começar Agora
@@ -132,13 +144,15 @@ export default function Precos() {
             <p className="text-slate-600 dark:text-slate-400 mb-4">
               Precisa de um plano personalizado para sua empresa?
             </p>
-            <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
+            <Button
+              variant="outline"
+              className="border-blue-600 text-blue-600 hover:bg-blue-50"
+            >
               Entre em Contato
             </Button>
           </motion.div>
         </div>
       </main>
-
       <Footer />
     </div>
   );
