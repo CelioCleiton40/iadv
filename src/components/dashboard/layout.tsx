@@ -11,41 +11,32 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true); // Começa colapsado em mobile
   const pathname = usePathname();
-
-  const menuItems = [
-    { icon: MdDashboard, label: "Dashboard", href: "/dashboard" },
-    { icon: MdFolder, label: "Casos", href: "/dashboard/casos" },
-    { icon: MdPeople, label: "Clientes", href: "/dashboard/clientes" },
-    { icon: MdCalendarMonth, label: "Agenda", href: "/dashboard/agenda" },
-    { icon: MdAttachMoney, label: "Financeiro", href: "/dashboard/financeiro" },
-    { icon: MdDescription, label: "Documentos", href: "/dashboard/documentos" },
-    { icon: MdGavel, label: "Juízes", href: "/dashboard/juiz-prevento" },
-  ];
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex">
       {/* Sidebar */}
       <aside
         className={`fixed lg:static inset-y-0 left-0 z-50 bg-white dark:bg-slate-800 transform transition-all duration-300 
-          ${isCollapsed ? "w-16" : "w-64"} border-r border-slate-200 dark:border-slate-700`}
+          ${isCollapsed ? "-translate-x-full lg:translate-x-0 lg:w-16" : "w-64"} border-r border-slate-200 dark:border-slate-700`}
       >
         <div className="flex flex-col h-full">
           <div className="h-16 flex items-center justify-between px-4">
             {!isCollapsed && <span className="text-lg font-bold">iAdv</span>}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="ml-auto"
-            >
-              <MdMenu className="h-5 w-5" />
-            </Button>
           </div>
 
           <nav className="flex-1 p-2 space-y-1">
-            {menuItems.map((item) => (
+            {[
+              { href: "/dashboard", icon: MdDashboard, label: "Dashboard" },
+              { href: "/dashboard/casos", icon: MdGavel, label: "Casos" },
+              { href: "/dashboard/clientes", icon: MdPeople, label: "Clientes" },
+              { href: "/dashboard/documentos", icon: MdFolder, label: "Documentos" },
+              { href: "/dashboard/agenda", icon: MdCalendarMonth, label: "Calendario" },
+              { href: "/dashboard/financeiro", icon: MdAttachMoney, label: "Financeiro" },
+              { href: "/dashboard/reports", icon: MdDescription, label: "Reports" },
+              { href: "/dashboard/configuracoes", icon: MdSettings, label: "Configurações" }
+            ].map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -64,7 +55,20 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main className={`flex-1 transition-all duration-300 ${isCollapsed ? "lg:ml-16" : "lg:ml-64"}`}>
+      <main className="flex-1">
+        {/* Mobile Header */}
+        <div className="lg:hidden flex items-center h-16 px-4 border-b border-slate-200 dark:border-slate-700">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="mr-4"
+          >
+            <MdMenu className="h-5 w-5" />
+          </Button>
+          <span className="text-lg font-bold">iAdv</span>
+        </div>
+
         <div className="container mx-auto px-4 py-8">
           {children}
         </div>
