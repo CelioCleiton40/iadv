@@ -199,7 +199,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
       <div className="text-balance text-center text-xs text-slate-500 dark:text-slate-400 [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-slate-800 dark:hover:[&_a]:text-slate-200">
         Ao se cadastrar, você concorda com nossos{" "}
         <Link href="/terms">Termos de Serviço</Link> e{" "}
-        <Link href="/privacy">Política de Privacidade</Link>.
+        <Link href="/politica-privacidade">Política de Privacidade</Link>.
       </div>
     </div>
   );

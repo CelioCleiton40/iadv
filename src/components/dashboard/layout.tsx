@@ -1,7 +1,19 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import { MdDashboard, MdGavel, MdPeople, MdFolder, MdCalendarMonth, MdAttachMoney, MdDescription, MdSettings, MdMenu } from "react-icons/md";
+import { IoMdBriefcase } from "react-icons/io";
+import { TbReportMoney } from "react-icons/tb";
+import {
+  MdDashboard,
+  MdGavel,
+  MdPeople,
+  MdFolder,
+  MdCalendarMonth,
+  MdAttachMoney,
+  MdDescription,
+  MdSettings,
+  MdMenu,
+} from "react-icons/md";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -19,7 +31,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Sidebar */}
       <aside
         className={`fixed lg:static inset-y-0 left-0 z-50 bg-white dark:bg-slate-800 transform transition-all duration-300 
-          ${isCollapsed ? "-translate-x-full lg:translate-x-0 lg:w-16" : "w-64"} border-r border-slate-200 dark:border-slate-700`}
+          ${
+            isCollapsed ? "-translate-x-full lg:translate-x-0 lg:w-16" : "w-64"
+          } border-r border-slate-200 dark:border-slate-700`}
       >
         <div className="flex flex-col h-full">
           <div className="h-16 flex items-center justify-between px-4">
@@ -29,13 +43,42 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <nav className="flex-1 p-2 space-y-1">
             {[
               { href: "/dashboard", icon: MdDashboard, label: "Dashboard" },
-              { href: "/dashboard/casos", icon: MdGavel, label: "Casos" },
-              { href: "/dashboard/clientes", icon: MdPeople, label: "Clientes" },
-              { href: "/dashboard/documentos", icon: MdFolder, label: "Documentos" },
-              { href: "/dashboard/agenda", icon: MdCalendarMonth, label: "Calendario" },
-              { href: "/dashboard/financeiro", icon: MdAttachMoney, label: "Financeiro" },
-              { href: "/dashboard/reports", icon: MdDescription, label: "Reports" },
-              { href: "/dashboard/configuracoes", icon: MdSettings, label: "Configurações" }
+              { href: "/dashboard/casos", icon: IoMdBriefcase, label: "Casos" },
+              {
+                href: "/dashboard/clientes",
+                icon: MdPeople,
+                label: "Clientes",
+              },
+              {
+                href: "/dashboard/documentos",
+                icon: MdFolder,
+                label: "Documentos",
+              },
+              {
+                href: "/dashboard/agenda",
+                icon: MdCalendarMonth,
+                label: "Calendario",
+              },
+              {
+                href: "/dashboard/financeiro",
+                icon: TbReportMoney,
+                label: "Financeiro",
+              },
+              {
+                href: "/dashboard/reports",
+                icon: MdDescription,
+                label: "Reports",
+              },
+              {
+                href: "/dashboard/juiz-prevento",
+                icon: MdGavel,
+                label: "Configurações",
+              },
+              {
+                href: "/dashboard/configuracoes",
+                icon: MdSettings,
+                label: "Configurações",
+              },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -69,9 +112,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <span className="text-lg font-bold">iAdv</span>
         </div>
 
-        <div className="container mx-auto px-4 py-8">
-          {children}
-        </div>
+        <div className="container mx-auto px-4 py-8">{children}</div>
       </main>
 
       {/* Mobile Overlay */}

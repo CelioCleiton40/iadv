@@ -13,18 +13,102 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { motion } from "framer-motion";
 import { MdSave, MdPreview, MdCalculate } from "react-icons/md";
+import { useState } from "react";
 
-const motivosRescisao = [
-  { id: "pedido", label: "Pedido de Demissão" },
-  { id: "sem_justa", label: "Dispensa sem Justa Causa" },
-  { id: "com_justa", label: "Dispensa com Justa Causa" },
-  { id: "acordo", label: "Acordo entre as Partes" },
-  { id: "culpa_reciproca", label: "Culpa Recíproca" }
-];
+interface TRCTValues {
+  saldoSalario: number;
+  decimoTerceiro: number;
+  feriasVencidas: number;
+  feriasProporcionais: number;
+  tercoFerias: number;
+  avisoPrevio: number;
+  inssSlario: number;
+  inssDecimo: number;
+  irrf: number;
+  adiantamentos: number;
+  outrasDeducoes: number;
+  fgtsMes: number;
+  multaFgts: number;
+  fgtsDecimo: number;
+  multaFgtsDecimo: number;
+}
 
 export default function TRCT() {
+  const [values, setValues] = useState<TRCTValues>({
+    saldoSalario: 0,
+    decimoTerceiro: 0,
+    feriasVencidas: 0,
+    feriasProporcionais: 0,
+    tercoFerias: 0,
+    avisoPrevio: 0,
+    inssSlario: 0,
+    inssDecimo: 0,
+    irrf: 0,
+    adiantamentos: 0,
+    outrasDeducoes: 0,
+    fgtsMes: 0,
+    multaFgts: 0,
+    fgtsDecimo: 0,
+    multaFgtsDecimo: 0,
+  });
+
+  const [totals, setTotals] = useState({
+    totalBruto: 0,
+    totalDeducoes: 0,
+    valorLiquido: 0,
+  });
+
+  const handleInputChange =
+    (field: keyof TRCTValues) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = parseFloat(e.target.value) || 0;
+      setValues((prev) => ({ ...prev, [field]: value }));
+    };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
+
+  const handleBlur =
+    (field: keyof TRCTValues) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = parseFloat(e.target.value) || 0;
+      e.target.value = formatCurrency(value);
+      setValues((prev) => ({ ...prev, [field]: value }));
+    };
+
+  const calculateTotals = () => {
+    const proventos =
+      values.saldoSalario +
+      values.decimoTerceiro +
+      values.feriasVencidas +
+      values.feriasProporcionais +
+      values.tercoFerias +
+      values.avisoPrevio;
+
+    const deducoes =
+      values.inssSlario +
+      values.inssDecimo +
+      values.irrf +
+      values.adiantamentos +
+      values.outrasDeducoes;
+
+    const fgtsTotal =
+      values.fgtsMes +
+      values.multaFgts +
+      values.fgtsDecimo +
+      values.multaFgtsDecimo;
+
+    setTotals({
+      totalBruto: proventos,
+      totalDeducoes: deducoes,
+      valorLiquido: proventos - deducoes,
+    });
+  };
+
+  // Update the form inputs in the JSX
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Header />
@@ -72,7 +156,12 @@ export default function TRCT() {
                       <SelectValue placeholder="Motivo do Afastamento" />
                     </SelectTrigger>
                     <SelectContent>
-                      {motivosRescisao.map((motivo) => (
+                      {[
+                        { id: "1", label: "Pedido de Demissão" },
+                        { id: "2", label: "Dispensa sem Justa Causa" },
+                        { id: "3", label: "Dispensa com Justa Causa" },
+                        { id: "4", label: "Término de Contrato" },
+                      ].map((motivo) => (
                         <SelectItem key={motivo.id} value={motivo.id}>
                           {motivo.label}
                         </SelectItem>
@@ -85,19 +174,28 @@ export default function TRCT() {
 
                 {/* Earnings */}
                 <div className="space-y-4">
-                  <Label className="text-lg font-semibold">Proventos</Label>
                   <div className="grid grid-cols-2 gap-4">
-                    <Input placeholder="Saldo de Salário" />
-                    <Input placeholder="13º Salário Proporcional" />
+                    <div>
+                      <Label>Saldo de Salário</Label>
+                      <Input
+                        type="text"
+                        step="0.01"
+                        value={values.saldoSalario || ""}
+                        onChange={handleInputChange("saldoSalario")}
+                        onBlur={handleBlur("saldoSalario")}
+                      />
+                    </div>
+                    <div>
+                      <Label>13º Salário Proporcional</Label>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        value={values.decimoTerceiro || ""}
+                        onChange={handleInputChange("decimoTerceiro")}
+                      />
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input placeholder="Férias Vencidas" />
-                    <Input placeholder="Férias Proporcionais" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input placeholder="1/3 Férias" />
-                    <Input placeholder="Aviso Prévio" />
-                  </div>
+                  {/* Add similar input fields for other earnings */}
                 </div>
 
                 {/* Deductions */}
@@ -132,16 +230,34 @@ export default function TRCT() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label>Total Bruto</Label>
-                      <Input readOnly className="bg-white dark:bg-slate-700" />
+                      <Input
+                        type="text"
+                        readOnly
+                        disabled
+                        className="bg-white dark:bg-slate-700"
+                        value={totals.totalBruto}
+                      />
                     </div>
                     <div>
                       <Label>Total Deduções</Label>
-                      <Input readOnly className="bg-white dark:bg-slate-700" />
+                      <Input
+                        type="text"
+                        readOnly
+                        disabled
+                        className="bg-white dark:bg-slate-700"
+                        value={totals.totalDeducoes}
+                      />
                     </div>
                   </div>
                   <div>
                     <Label>Valor Líquido</Label>
-                    <Input readOnly className="bg-white dark:bg-slate-700 font-bold" />
+                    <Input
+                      type="text"
+                      readOnly
+                      disabled
+                      className="bg-white dark:bg-slate-700 font-bold"
+                      value={totals.valorLiquido}
+                    />
                   </div>
                 </div>
               </form>
@@ -155,7 +271,13 @@ export default function TRCT() {
                 Ações
               </h3>
               <div className="space-y-4">
-                <Button className="w-full flex items-center gap-2">
+                <Button
+                  className="w-full flex items-center gap-2"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    calculateTotals();
+                  }}
+                >
                   <MdCalculate size={18} />
                   Calcular
                 </Button>
@@ -163,7 +285,10 @@ export default function TRCT() {
                   <MdPreview size={18} />
                   Visualizar
                 </Button>
-                <Button variant="outline" className="w-full flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  className="w-full flex items-center gap-2"
+                >
                   <MdSave size={18} />
                   Salvar
                 </Button>

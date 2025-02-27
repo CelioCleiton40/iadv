@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { NovoCompromissoDialog } from "@/components/agenda/novo-compromisso-dialog";
 import { DetalhesCompromissoDialog } from "@/components/agenda/detalhes-compromisso-dialog";
-
 import {
   Select,
   SelectContent,
@@ -15,7 +14,13 @@ import {
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
-import { MdAdd, MdEvent, MdAccessTime, MdPerson, MdDescription } from "react-icons/md";
+import {
+  MdAdd,
+  MdEvent,
+  MdAccessTime,
+  MdPerson,
+  MdDescription,
+} from "react-icons/md";
 
 const tiposCompromisso = [
   { id: "audiencia", label: "Audiência" },
@@ -23,7 +28,7 @@ const tiposCompromisso = [
   { id: "prazo", label: "Prazo Processual" },
   { id: "despacho", label: "Despacho" },
   { id: "julgamento", label: "Julgamento" },
-  { id: "pericia", label: "Perícia" }
+  { id: "pericia", label: "Perícia" },
 ];
 
 export default function Agenda() {
@@ -41,7 +46,6 @@ export default function Agenda() {
             Gerencie seus compromissos e prazos
           </p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Calendar Section */}
           <Card className="p-6">
@@ -55,7 +59,6 @@ export default function Agenda() {
               <NovoCompromissoDialog />
             </div>
           </Card>
-
           {/* Events List */}
           <div className="lg:col-span-2 space-y-6">
             <Card className="p-6">
@@ -76,7 +79,6 @@ export default function Agenda() {
                   </Select>
                 </div>
               </div>
-
               <div className="space-y-4">
                 {/* Sample Events */}
                 <Card className="p-4 border-l-4 border-l-blue-500">
@@ -95,13 +97,9 @@ export default function Agenda() {
                         <span>Cliente: João Silva</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <MdDescription />
                         <span>Processo nº 1234-56.2024.5.15.0001</span>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm">
-                      Ver Detalhes
-                    </Button>
                     <DetalhesCompromissoDialog
                       compromisso={{
                         titulo: "Audiência Trabalhista",
@@ -110,12 +108,11 @@ export default function Agenda() {
                         horario: "09:00",
                         cliente: "João Silva",
                         processo: "1234-56.2024.5.15.0001",
-                        descricao: "Audiência de instrução e julgamento"
+                        descricao: "Audiência de instrução e julgamento",
                       }}
                     />
                   </div>
                 </Card>
-
                 <Card className="p-4 border-l-4 border-l-yellow-500">
                   <div className="flex justify-between items-start">
                     <div className="space-y-2">
@@ -143,10 +140,11 @@ export default function Agenda() {
                 </Card>
               </div>
             </Card>
-
             {/* Upcoming Events */}
             <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Próximos Compromissos</h2>
+              <h2 className="text-xl font-semibold mb-4">
+                Próximos Compromissos
+              </h2>
               <div className="space-y-4">
                 {/* Add upcoming events list */}
                 <div className="flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
