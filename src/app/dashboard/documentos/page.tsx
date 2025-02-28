@@ -92,14 +92,14 @@ export default function Documentos() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-            Documentos
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            Gerencie e crie documentos jurídicos de forma eficiente
-          </p>
-        </div>
+      <div className="mb-8 space-y-2">
+  <h1 className="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600">
+    Documentos
+  </h1>
+  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md">
+    Gerencie e crie documentos jurídicos de forma eficiente.
+  </p>
+</div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {documentTools.map((tool, index) => (

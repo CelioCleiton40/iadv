@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { DashboardLayout } from "@/components/dashboard/layout";
 import {
   MdTrendingUp,
@@ -23,24 +23,34 @@ export default function DashboardPage() {
     <DashboardLayout>
       {/* Header */}
       <header className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+        <div className="space-y-2">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600">
             Painel de Controle
           </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Bem-vindo ao seu painel de controle
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md">
+            Bem-vindo ao seu painel de controle. Aqui você pode gerenciar seus
+            casos, clientes e acompanhar suas atividades diárias.
           </p>
         </div>
 
         {/* User Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <Avatar>
-                <AvatarImage src="/placeholder-avatar.jpg" alt="Dr. João Silva" />
-                <AvatarFallback>JS</AvatarFallback>
+            <div className="flex items-center gap-3 cursor-pointer transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-md">
+              {/* Avatar */}
+              <Avatar className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-blue-500 dark:border-blue-400">
+                <AvatarImage
+                  src="/placeholder-avatar.jpg"
+                  alt="Dr. João Silva"
+                  className="object-cover"
+                />
+                <AvatarFallback className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400 font-semibold">
+                  JS
+                </AvatarFallback>
               </Avatar>
-              <div className="hidden sm:block">
+
+              {/* User Details (Hidden on Mobile) */}
+              <div className="hidden sm:flex flex-col justify-center">
                 <p className="text-sm font-medium text-slate-800 dark:text-slate-100">
                   Dr. João Silva
                 </p>
@@ -74,21 +84,27 @@ export default function DashboardPage() {
           <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100">
             Casos Ativos
           </h3>
-          <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">24</p>
+          <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+            24
+          </p>
         </Card>
         <Card className="p-4 flex flex-col items-center justify-center text-center bg-gradient-to-b from-green-100 to-white dark:from-green-900 dark:to-slate-900">
           <MdAccessTime className="w-8 h-8 text-green-500 mb-2" />
           <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100">
             Taxa de Sucesso
           </h3>
-          <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">85%</p>
+          <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+            85%
+          </p>
         </Card>
         <Card className="p-4 flex flex-col items-center justify-center text-center bg-gradient-to-b from-purple-100 to-white dark:from-purple-900 dark:to-slate-900">
           <MdPeople className="w-8 h-8 text-purple-500 mb-2" />
           <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100">
             Clientes
           </h3>
-          <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">156</p>
+          <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+            156
+          </p>
         </Card>
         <Card className="p-4 flex flex-col items-center justify-center text-center bg-gradient-to-b from-yellow-100 to-white dark:from-yellow-900 dark:to-slate-900">
           <MdAttachMoney className="w-8 h-8 text-yellow-500 mb-2" />
@@ -104,6 +120,7 @@ export default function DashboardPage() {
       {/* Recent Cases and Calendar Section */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Cases */}
+        {/* Casos Recentes */}
         <Card className="p-6">
           <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
             Casos Recentes
@@ -112,23 +129,27 @@ export default function DashboardPage() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="p-4 border rounded-md hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                className="p-4 border rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
               >
-                <h3 className="font-medium text-slate-800 dark:text-slate-100">
-                  Processo #{2024000 + i}
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Cliente: João Silva
-                </p>
-                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                  Em Andamento
-                </span>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="font-medium text-slate-800 dark:text-slate-100">
+                      Processo #{2024000 + i}
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Cliente: João Silva
+                    </p>
+                  </div>
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                    Em Andamento
+                  </span>
+                </div>
               </div>
             ))}
           </div>
         </Card>
 
-        {/* Upcoming Events */}
+        {/* Próximos Eventos */}
         <Card className="p-6">
           <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
             Próximos Eventos
@@ -137,14 +158,25 @@ export default function DashboardPage() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="p-4 border rounded-md hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                className="p-4 border rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
               >
-                <p className="text-sm font-medium text-slate-800 dark:text-slate-100">
-                  MAR {i + 14} - Audiência
-                </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  14:00 - Fórum Central
-                </p>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                  <div>
+                    <p className="text-sm font-medium text-slate-800 dark:text-slate-100">
+                      MAR {i + 14} - Audiência
+                    </p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      14:00 - Fórum Central
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:w-auto"
+                  >
+                    Ver Detalhes
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
@@ -154,51 +186,66 @@ export default function DashboardPage() {
       {/* Tribunals Section */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* TRT */}
-        <Card className="p-6">
-          <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100 mb-2">
-            TRT 15ª Região
-          </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            12 Processos
-          </p>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Próxima Audiência: 18/03/2024
-          </p>
-          <p className="text-sm text-red-500">
-            Prazos Pendentes: 3
-          </p>
+        <Card className="p-6 bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+          <div className="flex flex-col space-y-2">
+            <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100">
+              TRT 15ª Região
+            </h3>
+            <div className="space-y-1">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="font-medium">Processos:</span> 12
+              </p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="font-medium">Próxima Audiência:</span>{" "}
+                18/03/2024
+              </p>
+              <p className="text-sm text-red-500">
+                <span className="font-medium">Prazos Pendentes:</span> 3
+              </p>
+            </div>
+          </div>
         </Card>
 
         {/* TJSP */}
-        <Card className="p-6">
-          <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100 mb-2">
-            TJSP
-          </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            8 Processos
-          </p>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Próxima Audiência: 20/03/2024
-          </p>
-          <p className="text-sm text-red-500">
-            Prazos Pendentes: 2
-          </p>
+        <Card className="p-6 bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+          <div className="flex flex-col space-y-2">
+            <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100">
+              TJSP
+            </h3>
+            <div className="space-y-1">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="font-medium">Processos:</span> 8
+              </p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="font-medium">Próxima Audiência:</span>{" "}
+                20/03/2024
+              </p>
+              <p className="text-sm text-red-500">
+                <span className="font-medium">Prazos Pendentes:</span> 2
+              </p>
+            </div>
+          </div>
         </Card>
 
         {/* TRF */}
-        <Card className="p-6">
-          <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100 mb-2">
-            TRF 3ª Região
-          </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            5 Processos
-          </p>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Próxima Audiência: 22/03/2024
-          </p>
-          <p className="text-sm text-red-500">
-            Prazos Pendentes: 1
-          </p>
+        <Card className="p-6 bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+          <div className="flex flex-col space-y-2">
+            <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100">
+              TRF 3ª Região
+            </h3>
+            <div className="space-y-1">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="font-medium">Processos:</span> 5
+              </p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="font-medium">Próxima Audiência:</span>{" "}
+                22/03/2024
+              </p>
+              <p className="text-sm text-red-500">
+                <span className="font-medium">Prazos Pendentes:</span> 1
+              </p>
+            </div>
+          </div>
         </Card>
       </section>
     </DashboardLayout>

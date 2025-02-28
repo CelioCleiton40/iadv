@@ -4,7 +4,6 @@ import { Header } from "@/components/header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
@@ -30,14 +29,14 @@ export default function Casos() {
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-              Casos
-            </h1>
-            <p className="text-slate-600 dark:text-slate-400">
-              Gerencie seus processos e casos
-            </p>
-          </div>
+        <div className="space-y-2">
+  <h1 className="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 mb-2">
+    Casos
+  </h1>
+  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md">
+    Gerencie seus processos e casos de forma eficiente.
+  </p>
+</div>
           <Link href="/dashboard/casos/novo">
             <Button className="flex items-center gap-2">
               <MdAdd size={18} />

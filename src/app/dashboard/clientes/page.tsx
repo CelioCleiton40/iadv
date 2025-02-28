@@ -22,11 +22,11 @@ export default function Clientes() {
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 mb-2">
               Clientes
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
-              Gerencie seus clientes e processos
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md">
+      Gerencie seus clientes e processos de forma eficiente.
             </p>
           </div>
           <Link href="/dashboard/clientes/novo" className="mt-4 sm:mt-0">
