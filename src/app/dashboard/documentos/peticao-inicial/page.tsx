@@ -14,61 +14,49 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
-import { MdSave, MdPreview, MdAdd, MdDelete } from "react-icons/md";
-import { useState } from "react";
+import { MdSave, MdPreview, MdAdd, MdDelete, MdPrint } from "react-icons/md";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FormData } from "@/models/FormData"
-const initialFormState: FormData = {
-  modelo: "",
-  comarca: "",
-  vara: "",
-  partes: [{ nome: "", qualificacao: "" }],
-  dosFatos: "",
-  doDireito: "",
-  dosPedidos: "",
-  valorCausa: "",
-};
+import { usePeticaoStore } from "@/store/peticaoStore";
 
 export default function PeticaoInicial() {
-  const [formData, setFormData] = useState<FormData>(initialFormState);
-  
-  const [showPreview, setShowPreview] = useState(false);
-  const addParte = () => {
-    setFormData(prev => ({ ...prev, partes: [...prev.partes, { nome: "", qualificacao: "" }] }));
-  };
-  const removeParte = (index: number) => {
-    setFormData(prev => ({ ...prev, partes: prev.partes.filter((_, i) => i !== index) }));
-  };
-  // Update form handlers
-  const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-  const handleParteChange = (index: number, field: 'nome' | 'qualificacao', value: string) => {
-    const newPartes = [...formData.partes];
-    newPartes[index] = { ...newPartes[index], [field]: value };
-    setFormData(prev => ({ ...prev, partes: newPartes }));
-  };
-  const handleSaveDraft = () => {
-    localStorage.setItem("peticaoInicial", JSON.stringify(formData));
-    setFormData(initialFormState);
-    alert("Rascunho salvo com sucesso!");
-  };
-  // Update the PreviewPeticao component
+  const {
+    formData,
+    showPreview,
+    peticaoTemplates,
+    setFormData,
+    setShowPreview,
+    handleInputChange,
+    handleParteChange,
+    addParte,
+    removeParte,
+    handleTemplateChange,
+    handleSaveDraft,
+  } = usePeticaoStore();
+
   const PreviewPeticao = () => (
-    <Dialog open={showPreview} onOpenChange={setShowPreview}>
+    <Dialog open={showPreview} onOpenChange={(show) => setShowPreview(show)}>
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Visualização da Petição</DialogTitle>
+          <Button
+            variant="outline"
+            className="absolute right-8 top-4 flex items-center gap-2"
+            onClick={() => window.print()}
+          >
+            <MdPrint size={18} />
+            Imprimir
+          </Button>
         </DialogHeader>
-        <div className="space-y-6 p-4 font-serif text-slate-800 dark:text-slate-200">
+        <div className="space-y-6 p-4 font-serif text-slate-800 dark:text-slate-200 print:text-black">
           <div className="text-center space-y-4">
             <p className="uppercase">
-              EXCELENTÍSSIMO(A) SENHOR(A) DOUTOR(A) JUIZ(A) DE DIREITO DA {formData.vara} DA COMARCA DE {formData.comarca}
+              EXCELENTÍSSIMO(A) SENHOR(A) DOUTOR(A) JUIZ(A) DE DIREITO DA{" "}
+              {formData.vara} DA COMARCA DE {formData.comarca}
             </p>
           </div>
 
@@ -76,7 +64,9 @@ export default function PeticaoInicial() {
             {formData.partes.map((parte, index) => (
               <p key={index} className="indent-8">
                 {parte.nome}, {parte.qualificacao}
-                {index === 0 ? ", vem respeitosamente à presença de Vossa Excelência propor a presente" : ""}
+                {index === 0
+                  ? ", vem respeitosamente à presença de Vossa Excelência propor a presente"
+                  : ""}
               </p>
             ))}
 
@@ -87,6 +77,22 @@ export default function PeticaoInicial() {
             <div>
               <h2 className="font-bold uppercase mb-4">I - DOS FATOS</h2>
               <p className="indent-8 whitespace-pre-wrap">
+                {/* Exibindo os dados da PARTE REQUERENTE na visualização */}
+                PARTE REQUERENTE: {formData.requerenteNome}, nacionalidade:{" "}
+                {formData.requerenteNacionalidade}, estado civil:{" "}
+                {formData.requerenteEstadoCivil}, profissão:{" "}
+                {formData.requerenteProfissao}, filiação:{" "}
+                {formData.requerenteFiliacao}, portador(a) da Carteira de
+                Identidade nº: {formData.requerenteRGNumero}, órgão
+                expedidor/UF: {formData.requerenteRGOrgaoExpedidor}, data da
+                expedição: {formData.requerenteRGDataExpedicao}, inscrito(a) no
+                CPF sob o nº: {formData.requerenteCPF}, residente e
+                domiciliado(a) na {formData.requerenteResidencia}, Cidade:{" "}
+                {formData.requerenteCidade}, CEP: {formData.requerenteCEP},
+                telefone(s): {formData.requerenteTelefone}, WhatsApp:{" "}
+                {formData.requerenteWhatsApp}, e-mail:{" "}
+                {formData.requerenteEmail}, vem, à presença de Vossa Excelência,
+                propor a presente {"\n\n"}
                 {formData.dosFatos || "Não especificado"}
               </p>
             </div>
@@ -108,7 +114,9 @@ export default function PeticaoInicial() {
             <p>Dá-se à causa o valor de {formData.valorCausa || "R$ 0,00"}</p>
 
             <div className="text-center space-y-4 mt-8">
-              <p>{formData.comarca}, {new Date().toLocaleDateString()}</p>
+              <p>
+                {formData.comarca}, {new Date().toLocaleDateString()}
+              </p>
               <p className="mt-12">_____________________________</p>
               <p>Advogado(a)</p>
               <p>OAB/XX 000.000</p>
@@ -118,14 +126,14 @@ export default function PeticaoInicial() {
       </DialogContent>
     </Dialog>
   );
-  // Update the form inputs to use the new state
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 mb-2">
-            Petição Inicial
+            {formData.modelo || "Petição Inicial"}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
             Crie uma nova petição inicial usando nossos modelos
@@ -140,7 +148,13 @@ export default function PeticaoInicial() {
                 {/* Template Selection */}
                 <div className="space-y-2">
                   <Label>Modelo de Petição</Label>
-                  <Select>
+                  <Select
+                    onValueChange={(value) =>
+                      handleTemplateChange(
+                        value as keyof typeof peticaoTemplates
+                      )
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione um modelo" />
                     </SelectTrigger>
@@ -153,25 +167,155 @@ export default function PeticaoInicial() {
                         Obrigação de Fazer
                       </SelectItem>
                       <SelectItem value="despejo">Ação de Despejo</SelectItem>
+                      <SelectItem value="juizadoEspecialCivel">
+                        Juizado Especial Cível
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* Court Information */}
+                {/* Informações do Juízo */}
                 <div className="space-y-4">
                   <Label>Informações do Juízo</Label>
-                  <Input 
-                    placeholder="Comarca" 
+                  <Input
+                    placeholder="Comarca"
                     value={formData.comarca}
-                    onChange={(e) => handleInputChange('comarca', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("comarca", e.target.value)
+                    }
                   />
-                  <Input placeholder="Vara" />
+                  <Input
+                    placeholder="Vara"
+                    value={formData.vara}
+                    onChange={(e) => handleInputChange("vara", e.target.value)}
+                  />
                 </div>
 
-                {/* Parties */}
+                {/* **Nova Seção: Dados da PARTE REQUERENTE** */}
+                <div className="space-y-4">
+                  <Label>Dados da parte requerente</Label>
+                  <Input
+                    placeholder="Nome Completo"
+                    value={formData.requerenteNome}
+                    onChange={(e) =>
+                      handleInputChange("requerenteNome", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="Nacionalidade"
+                    value={formData.requerenteNacionalidade}
+                    onChange={(e) =>
+                      handleInputChange(
+                        "requerenteNacionalidade",
+                        e.target.value
+                      )
+                    }
+                  />
+                  <Input
+                    placeholder="Estado Civil"
+                    value={formData.requerenteEstadoCivil}
+                    onChange={(e) =>
+                      handleInputChange("requerenteEstadoCivil", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="Profissão"
+                    value={formData.requerenteProfissao}
+                    onChange={(e) =>
+                      handleInputChange("requerenteProfissao", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="Filiação"
+                    value={formData.requerenteFiliacao}
+                    onChange={(e) =>
+                      handleInputChange("requerenteFiliacao", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="RG Número"
+                    value={formData.requerenteRGNumero}
+                    onChange={(e) =>
+                      handleInputChange("requerenteRGNumero", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="RG Órgão Expedidor/UF"
+                    value={formData.requerenteRGOrgaoExpedidor}
+                    onChange={(e) =>
+                      handleInputChange(
+                        "requerenteRGOrgaoExpedidor",
+                        e.target.value
+                      )
+                    }
+                  />
+                  <Input
+                    placeholder="RG Data de Expedição"
+                    type="date" // Usando tipo date para facilitar a seleção de data
+                    value={formData.requerenteRGDataExpedicao}
+                    onChange={(e) =>
+                      handleInputChange(
+                        "requerenteRGDataExpedicao",
+                        e.target.value
+                      )
+                    }
+                  />
+                  <Input
+                    placeholder="CPF"
+                    value={formData.requerenteCPF}
+                    onChange={(e) =>
+                      handleInputChange("requerenteCPF", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="Residência (Endereço Completo)"
+                    value={formData.requerenteResidencia}
+                    onChange={(e) =>
+                      handleInputChange("requerenteResidencia", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="Cidade"
+                    value={formData.requerenteCidade}
+                    onChange={(e) =>
+                      handleInputChange("requerenteCidade", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="CEP"
+                    value={formData.requerenteCEP}
+                    onChange={(e) =>
+                      handleInputChange("requerenteCEP", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="Telefone(s)"
+                    value={formData.requerenteTelefone}
+                    onChange={(e) =>
+                      handleInputChange("requerenteTelefone", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="WhatsApp"
+                    value={formData.requerenteWhatsApp}
+                    onChange={(e) =>
+                      handleInputChange("requerenteWhatsApp", e.target.value)
+                    }
+                  />
+                  <Input
+                    placeholder="Email"
+                    type="email" // Usando tipo email para validação básica de email
+                    value={formData.requerenteEmail}
+                    onChange={(e) =>
+                      handleInputChange("requerenteEmail", e.target.value)
+                    }
+                  />
+                </div>
+
+                {/* Partes do Processo (Réu/Réus) */}
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <Label>Partes do Processo</Label>
+                    <Label>Partes do Processo (Réu/Réus)</Label>
                     <Button
                       type="button"
                       variant="outline"
@@ -206,66 +350,86 @@ export default function PeticaoInicial() {
                           </Button>
                         )}
                       </div>
-                      <Input placeholder="Nome completo" 
-                      value={parte.nome}
-                      onChange={(e) => handleParteChange(index, 'nome', e.target.value)}
+                      <Input
+                        placeholder="Nome completo"
+                        value={parte.nome}
+                        onChange={(e) =>
+                          handleParteChange(index, "nome", e.target.value)
+                        }
                       />
-                      <Textarea placeholder="Qualificação" 
-                      value={parte.qualificacao}
-                      onChange={(e) => handleParteChange(index, 'qualificacao', e.target.value)}
+                      <Textarea
+                        placeholder="Qualificação"
+                        value={parte.qualificacao}
+                        onChange={(e) =>
+                          handleParteChange(
+                            index,
+                            "qualificacao",
+                            e.target.value
+                          )
+                        }
                       />
                     </motion.div>
                   ))}
                 </div>
 
-                {/* Facts and Law */}
+                {/* Fatos e Direito */}
                 <div className="space-y-4">
                   <Label>Fatos e Direito</Label>
-                  <Textarea placeholder="Dos Fatos" className="min-h-[150px]" 
-                  value={formData.dosFatos}
-                  onChange={(e) => handleInputChange('dosFatos', e.target.value)}
+                  <Textarea
+                    placeholder="Dos Fatos"
+                    className="min-h-[150px]"
+                    value={formData.dosFatos}
+                    onChange={(e) =>
+                      handleInputChange("dosFatos", e.target.value)
+                    }
                   />
                   <Textarea
                     placeholder="Do Direito"
                     className="min-h-[150px]"
                     value={formData.doDireito}
-                    onChange={(e) => handleInputChange('doDireito', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("doDireito", e.target.value)
+                    }
                   />
                 </div>
 
-                {/* Requests */}
+                {/* Pedidos */}
                 <div className="space-y-4">
                   <Label>Pedidos</Label>
                   <Textarea
                     placeholder="Dos Pedidos"
                     className="min-h-[150px]"
                     value={formData.dosPedidos}
-                    onChange={(e) => handleInputChange('dosPedidos', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("dosPedidos", e.target.value)
+                    }
                   />
                 </div>
 
-                {/* Value */}
+                {/* Valor da Causa */}
                 <div className="space-y-2">
                   <Label>Valor da Causa</Label>
-                  <Input type="text" 
+                  <Input
+                    type="text"
                     placeholder="R$ 0,00"
                     value={formData.valorCausa}
                     onChange={(e) => {
-                      // Remove non-numeric characters
-                      const value = e.target.value.replace(/\D/g, '');
-                      
-                      // Convert to number and format as BRL currency
+                      const value = e.target.value.replace(/\D/g, "");
                       if (value) {
                         const numberValue = parseInt(value, 10) / 100;
-                        const formattedValue = numberValue.toLocaleString('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL',
-                        });
-                        handleInputChange('valorCausa', formattedValue);
+                        const formattedValue = numberValue.toLocaleString(
+                          "pt-BR",
+                          {
+                            style: "currency",
+                            currency: "BRL",
+                          }
+                        );
+                        handleInputChange("valorCausa", formattedValue);
                       } else {
-                        handleInputChange('valorCausa', '');
+                        handleInputChange("valorCausa", "");
                       }
-                    }} />
+                    }}
+                  />
                 </div>
               </form>
             </Card>
@@ -279,7 +443,7 @@ export default function PeticaoInicial() {
               </h3>
               <div className="space-y-4">
                 {/* Update the Preview button */}
-                <Button 
+                <Button
                   className="w-full flex items-center gap-2"
                   onClick={() => setShowPreview(true)}
                 >
@@ -288,7 +452,7 @@ export default function PeticaoInicial() {
                 </Button>
 
                 <PreviewPeticao />
-                
+
                 <Button
                   variant="outline"
                   className="w-full flex items-center gap-2"
