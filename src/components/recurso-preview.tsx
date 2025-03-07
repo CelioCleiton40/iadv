@@ -13,31 +13,8 @@ import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { toast } from "sonner";
 import { useStore } from "@/store/store"; // Importando Zustand
+import { RecursoPreviewProps } from "@/type/inter-face-recursos";
 
-// Types
-interface Razao {
-  titulo: string;
-  conteudo: string;
-}
-
-interface FormData {
-  tipoRecurso: string;
-  numeroProcesso: string;
-  vara: string;
-  tribunal: string;
-  recorrente: string;
-  recorrido: string;
-  razoes: Razao[];
-  pedidos: string;
-  anexos: string[];
-}
-
-interface RecursoPreviewProps {
-  formData: FormData;
-  showPreview: boolean;
-  setShowPreview: (show: boolean) => void;
-  handleSaveDraft: () => void;
-}
 
 const tiposRecurso = {
   apelacao: {
