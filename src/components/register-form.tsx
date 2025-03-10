@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerUser } from "@/services/auth";
 import { toast } from "sonner";
+import useAuthStore from "@/store/registerStore"; // Importa a store Zustand
 
 // Esquema de validação Zod
 const registerSchema = z
@@ -30,11 +31,14 @@ const registerSchema = z
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-export function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
+export function RegisterForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  const { setUser } = useAuthStore(); // Hook para Zustand
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Configuração do formulário com react-hook-form e Zod
   const {
     register,
     handleSubmit,
@@ -43,26 +47,31 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
     resolver: zodResolver(registerSchema),
   });
 
-  // Função de envio do formulário
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      setIsLoading(true); // Ativa o estado de carregamento
-      await registerUser({
+      setIsLoading(true);
+      const newUser = {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
         password: data.password,
-      });
+      };
 
-      // Feedback de sucesso
+      await registerUser(newUser); // Registra o usuário
+
+      setUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+      }); // Atualiza o Zustand com os dados do usuário
+
       toast.success("Cadastro realizado com sucesso!");
-      router.push("/perfil"); // Redireciona para a página de login
+      router.push("/perfil");
     } catch (error) {
-      // Feedback de erro
       toast.error("Erro ao realizar cadastro. Tente novamente.");
       console.error(error);
     } finally {
-      setIsLoading(false); // Desativa o estado de carregamento
+      setIsLoading(false);
     }
   };
 
@@ -78,7 +87,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
             <div className="flex flex-col gap-6">
               {/* Cabeçalho */}
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600">
                   Criar Conta
                 </h1>
                 <p className="text-balance text-slate-600 dark:text-slate-400">
@@ -89,7 +98,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
               {/* Campos do formulário */}
               <div className="grid gap-4">
                 <div className="grid grid-cols-2 gap-4">
-                  {/* Nome */}
                   <div className="grid gap-2">
                     <Label htmlFor="firstName">Nome</Label>
                     <Input
@@ -103,7 +111,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                     )}
                   </div>
 
-                  {/* Sobrenome */}
                   <div className="grid gap-2">
                     <Label htmlFor="lastName">Sobrenome</Label>
                     <Input
@@ -118,7 +125,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                   </div>
                 </div>
 
-                {/* E-mail */}
                 <div className="grid gap-2">
                   <Label htmlFor="email">E-mail</Label>
                   <Input
@@ -132,7 +138,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                   )}
                 </div>
 
-                {/* Senha */}
                 <div className="grid gap-2">
                   <Label htmlFor="password">Senha</Label>
                   <Input
@@ -146,7 +151,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                   )}
                 </div>
 
-                {/* Confirmar Senha */}
                 <div className="grid gap-2">
                   <Label htmlFor="confirmPassword">Confirmar Senha</Label>
                   <Input
@@ -156,12 +160,13 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                     className="border-slate-200 dark:border-slate-800"
                   />
                   {errors.confirmPassword && (
-                    <p className="text-red-500">{errors.confirmPassword.message}</p>
+                    <p className="text-red-500">
+                      {errors.confirmPassword.message}
+                    </p>
                   )}
                 </div>
               </div>
 
-              {/* Botão de envio */}
               <Button
                 type="submit"
                 className="w-full bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600"
@@ -170,7 +175,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                 {isLoading ? "Cadastrando..." : "Cadastrar"}
               </Button>
 
-              {/* Link para login */}
               <div className="text-center text-sm text-slate-600 dark:text-slate-400">
                 Já tem uma conta?{" "}
                 <Link
@@ -183,7 +187,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
             </div>
           </form>
 
-          {/* Imagem de fundo */}
           <div className="relative hidden bg-muted md:block">
             <img
               src="https://images.pexels.com/photos/5669619/pexels-photo-5669619.jpeg"
@@ -195,8 +198,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
         </CardContent>
       </Card>
 
-      {/* Termos de serviço e política de privacidade */}
-      <div className="text-balance text-center text-xs text-slate-500 dark:text-slate-400 [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-slate-800 dark:hover:[&_a]:text-slate-200">
+      <div className="text-center text-xs text-slate-500 dark:text-slate-400">
         Ao se cadastrar, você concorda com nossos{" "}
         <Link href="/terms">Termos de Serviço</Link> e{" "}
         <Link href="/politica-privacidade">Política de Privacidade</Link>.

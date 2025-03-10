@@ -2,16 +2,7 @@
 
 import { Header } from "@/components/header";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  MdAdd,
   MdAttachMoney,
   MdTrendingUp,
   MdReceipt,
@@ -20,9 +11,6 @@ import {
   MdPieChart,
 } from "react-icons/md";
 import Link from "next/link";
-import { NovaReceitaDialog } from "@/components/financeiro/nova-receita-dialog";
-import { NovaDespesaDialog } from "@/components/financeiro/nova-despesa-dialog";
-import { ReciboDialog } from "@/components/financeiro/recibo-dialog";
 import { EmitirNotaDialog } from "@/components/financeiro/emitir-nota-dialog";
 import { RelatorioDialog } from "@/components/financeiro/relatorio-dialog";
 import { FechamentoCaixaDialog } from "@/components/financeiro/fechamento-caixa-dialog";

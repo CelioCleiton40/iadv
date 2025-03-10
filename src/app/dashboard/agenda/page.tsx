@@ -39,7 +39,7 @@ export default function Agenda() {
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+          <h1 className="text-4xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 mb-2">
             Agenda
           </h1>
           <p className="text-slate-600 dark:text-slate-400">

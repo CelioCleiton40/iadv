@@ -1,184 +1,74 @@
 "use client";
 
+import React from "react";
+import ContactForm from "@/components/ContactForm";
+import ContactInfo from "@/components/ContactInfo";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
-import { MdEmail, MdPhone, MdLocationOn, MdSend } from "react-icons/md";
-import { useState } from "react";
-import { toast } from "sonner";
 
-export default function Contato() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const ContactPage: React.FC = () => (
+  <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900/20">
+    <Header />
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    <main className="flex-grow container mx-auto px-4 py-8 md:py-12 lg:py-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-8 text-center"
+      >
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 mb-4">
+          Entre em Contato
+        </h1>
+        <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-sm md:text-base">
+          Estamos prontos para atender suas necessidades jurídicas. Preencha o
+          formulário abaixo ou utilize um de nossos canais de comunicação.
+        </p>
+      </motion.div>
 
-    // Simular envio
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    toast.success("Mensagem enviada com sucesso!");
-    setIsSubmitting(false);
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
-      <Header />
-
-      <main className="flex-1 container mx-auto px-4 py-8 md:py-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="grid md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-lg p-6 md:p-8"
         >
-          {/* Informações de Contato */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 mb-4">
-                Entre em Contato
-              </h1>
-              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
-                Estamos aqui para ajudar. Entre em contato conosco por qualquer um dos canais abaixo.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              {/* Email */}
-              <Card className="p-4 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl">
-                    <MdEmail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-200">
-                      Email
-                    </h3>
-                    <a
-                      href="mailto:contato@iadvmanager.com.br"
-                      className="text-slate-600 dark:text-slate-400 hover:underline"
-                    >
-                      contato@iadvmanager.com.br
-                    </a>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Telefone */}
-              <Card className="p-4 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl">
-                    <MdPhone className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-200">
-                      Telefone
-                    </h3>
-                    <a
-                      href="tel:+551199999999"
-                      className="text-slate-600 dark:text-slate-400 hover:underline"
-                    >
-                      (84) 98618-0964
-                    </a>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Endereço */}
-              <Card className="p-4 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl">
-                    <MdLocationOn className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-200">
-                      Endereço
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400">
-                      Av. Augusto Severo, 1436, Centro - Mossoró, RN
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </div>
-
-          {/* Formulário de Contato */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            <Card className="p-6 md:p-8 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm shadow-lg">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Nome e Email */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                      Nome
-                    </label>
-                    <Input
-                      required
-                      placeholder="Seu nome"
-                      className="dark:bg-slate-700 dark:border-slate-600"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                      Email
-                    </label>
-                    <Input
-                      required
-                      type="email"
-                      placeholder="seu@email.com"
-                      className="dark:bg-slate-700 dark:border-slate-600"
-                    />
-                  </div>
-                </div>
-
-                {/* Assunto */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Assunto
-                  </label>
-                  <Input
-                    required
-                    placeholder="Assunto da mensagem"
-                    className="dark:bg-slate-700 dark:border-slate-600"
-                  />
-                </div>
-
-                {/* Mensagem */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Mensagem
-                  </label>
-                  <Textarea
-                    required
-                    placeholder="Digite sua mensagem..."
-                    className="min-h-[150px] dark:bg-slate-700 dark:border-slate-600"
-                  />
-                </div>
-
-                {/* Botão de Envio */}
-                <Button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
-                  disabled={isSubmitting}
-                >
-                  <MdSend className="mr-2 h-4 w-4" />
-                  {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
-                </Button>
-              </form>
-            </Card>
-          </motion.div>
+          <ContactInfo />
         </motion.div>
-      </main>
 
-      <Footer />
-    </div>
-  );
-}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-lg p-6 md:p-8"
+        >
+          <ContactForm />
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="mt-16 max-w-6xl mx-auto rounded-xl overflow-hidden shadow-lg"
+      >
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3942.0498982384975!2d-37.34561372564226!3d-5.191849003932623!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7b289b088e5c6f3%3A0x2e4ddf17f06f67c0!2sJW%20Coworking!5e0!3m2!1spt-BR!2sbr!4v1686780000000!5m2!1spt-BR!2sbr"
+          width="100%"
+          height="450"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Localização do escritório"
+          className="w-full"
+        ></iframe>
+      </motion.div>
+    </main>
+
+    <Footer />
+  </div>
+);
+
+export default ContactPage;
