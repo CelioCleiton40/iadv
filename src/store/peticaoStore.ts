@@ -1,6 +1,4 @@
 import { create } from 'zustand';
-
-
 export interface Parte {
     nome: string;
     qualificacao: string;
