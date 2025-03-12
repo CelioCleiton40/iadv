@@ -11,7 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MdAdd, MdSearch, MdPerson, MdFolder, MdEdit, MdDelete } from "react-icons/md";
+import {
+  MdAdd,
+  MdSearch,
+  MdPerson,
+  MdFolder,
+  MdEdit,
+  MdDelete,
+} from "react-icons/md";
 import Link from "next/link";
 
 export default function Clientes() {
@@ -26,7 +33,7 @@ export default function Clientes() {
               Clientes
             </h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md">
-      Gerencie seus clientes e processos de forma eficiente.
+              Gerencie seus clientes e processos de forma eficiente.
             </p>
           </div>
           <Link href="/dashboard/clientes/novo" className="mt-4 sm:mt-0">
@@ -45,22 +52,23 @@ export default function Clientes() {
               {/* Search Bar */}
               <div className="relative">
                 <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
-                <Input
-                  className="pl-10"
-                  placeholder="Buscar clientes..."
-                />
+                <Input className="pl-10" placeholder="Buscar clientes..." />
               </div>
 
               {/* Filters */}
               <div className="space-y-2">
-                <h3 className="font-medium text-sm sm:text-base">Filtrar por:</h3>
+                <h3 className="font-medium text-sm sm:text-base">
+                  Filtrar por:
+                </h3>
                 <Select>
                   <SelectTrigger>
                     <SelectValue placeholder="Tipo de Cliente" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="pessoa_fisica">Pessoa Física</SelectItem>
-                    <SelectItem value="pessoa_juridica">Pessoa Jurídica</SelectItem>
+                    <SelectItem value="pessoa_juridica">
+                      Pessoa Jurídica
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <Select>
@@ -80,7 +88,9 @@ export default function Clientes() {
                   <SelectContent>
                     <SelectItem value="trabalhista">Trabalhista</SelectItem>
                     <SelectItem value="civil">Civil</SelectItem>
-                    <SelectItem value="previdenciario">Previdenciário</SelectItem>
+                    <SelectItem value="previdenciario">
+                      Previdenciário
+                    </SelectItem>
                     <SelectItem value="tributario">Tributário</SelectItem>
                   </SelectContent>
                 </Select>
@@ -100,7 +110,10 @@ export default function Clientes() {
                   <TabsTrigger value="inativos" className="flex-1 sm:flex-none">
                     Inativos
                   </TabsTrigger>
-                  <TabsTrigger value="prospectos" className="flex-1 sm:flex-none">
+                  <TabsTrigger
+                    value="prospectos"
+                    className="flex-1 sm:flex-none"
+                  >
                     Prospectos
                   </TabsTrigger>
                 </TabsList>
@@ -133,6 +146,15 @@ export default function Clientes() {
                           </div>
                         </div>
                         <div className="flex gap-2 mt-4 sm:mt-0">
+                          <Link href="/dashboard/clientes/detalhes/6">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-blue-500"
+                            >
+                              Detalhes
+                            </Button>
+                          </Link>
                           <Button variant="outline" size="sm">
                             <MdFolder className="w-4 h-4" />
                           </Button>
@@ -175,6 +197,15 @@ export default function Clientes() {
                           </div>
                         </div>
                         <div className="flex gap-2 mt-4 sm:mt-0">
+                          <Link href="/dashboard/clientes/detalhes/6">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-blue-500"
+                            >
+                              Detalhes
+                            </Button>
+                          </Link>
                           <Button variant="outline" size="sm">
                             <MdFolder className="w-4 h-4" />
                           </Button>
@@ -196,16 +227,210 @@ export default function Clientes() {
 
                 {/* Inactive Clients */}
                 <TabsContent value="inativos">
-                  <p className="text-slate-600 dark:text-slate-400">
-                    Nenhum cliente inativo encontrado.
-                  </p>
+                  <div className="space-y-4">
+                    {/* Inactive Client Card */}
+                    <Card className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                        <div className="flex gap-4">
+                          <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-full">
+                            <MdPerson className="w-6 h-6 text-slate-500" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-sm sm:text-base">
+                              Maria Oliveira Costa
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                              CPF: 987.654.321-00
+                            </p>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              <span className="text-[10px] sm:text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
+                                Civil
+                              </span>
+                              <span className="text-[10px] sm:text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
+                                Inativo desde 10/05/2023
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 mt-4 sm:mt-0">
+                          <Link href="/dashboard/clientes/detalhes/2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-blue-500"
+                            >
+                              Detalhes
+                            </Button>
+                          </Link>
+                          <Button variant="outline" size="sm">
+                            <MdFolder className="w-4 h-4" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <MdEdit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-500"
+                          >
+                            <MdDelete className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+
+                    {/* Another Inactive Client Card */}
+                    <Card className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                        <div className="flex gap-4">
+                          <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-full">
+                            <MdPerson className="w-6 h-6 text-slate-500" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-sm sm:text-base">
+                              Comércio ABC S.A.
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                              CNPJ: 98.765.432/0001-10
+                            </p>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              <span className="text-[10px] sm:text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
+                                Tributário
+                              </span>
+                              <span className="text-[10px] sm:text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
+                                Inativo desde 22/01/2023
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 mt-4 sm:mt-0">
+                          <Link href="/dashboard/clientes/detalhes/2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-blue-500"
+                            >
+                              Detalhes
+                            </Button>
+                          </Link>
+                          <Button variant="outline" size="sm">
+                            <MdFolder className="w-4 h-4" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <MdEdit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-500"
+                          >
+                            <MdDelete className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
                 </TabsContent>
 
                 {/* Prospective Clients */}
                 <TabsContent value="prospectos">
-                  <p className="text-slate-600 dark:text-slate-400">
-                    Nenhum prospecto encontrado.
-                  </p>
+                  <div className="space-y-4">
+                    {/* Prospective Client Card */}
+                    <Card className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                        <div className="flex gap-4">
+                          <div className="p-3 bg-amber-100 dark:bg-amber-900 rounded-full">
+                            <MdPerson className="w-6 h-6 text-amber-500" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-sm sm:text-base">
+                              Pedro Almeida Souza
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                              CPF: 456.789.123-00
+                            </p>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              <span className="text-[10px] sm:text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">
+                                Prospecto
+                              </span>
+                              <span className="text-[10px] sm:text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                                Previdenciário
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 mt-4 sm:mt-0">
+                          <Link href="/dashboard/clientes/detalhes/4">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-blue-500"
+                            >
+                              Detalhes
+                            </Button>
+                          </Link>
+                          <Button variant="outline" size="sm">
+                            <MdEdit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-500"
+                          >
+                            <MdDelete className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+
+                    {/* Another Prospective Client Card */}
+                    <Card className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                        <div className="flex gap-4">
+                          <div className="p-3 bg-amber-100 dark:bg-amber-900 rounded-full">
+                            <MdPerson className="w-6 h-6 text-amber-500" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-sm sm:text-base">
+                              Indústrias Silva Ltda
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                              CNPJ: 45.678.912/0001-34
+                            </p>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              <span className="text-[10px] sm:text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">
+                                Prospecto
+                              </span>
+                              <span className="text-[10px] sm:text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                                Trabalhista
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 mt-4 sm:mt-0">
+                          <Link href="/dashboard/clientes/detalhes/5">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-blue-500"
+                            >
+                              Detalhes
+                            </Button>
+                          </Link>
+                          <Button variant="outline" size="sm">
+                            <MdEdit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-500"
+                          >
+                            <MdDelete className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
                 </TabsContent>
               </Tabs>
             </Card>

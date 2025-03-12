@@ -13,11 +13,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MdSave, MdArrowBack, MdAttachFile, MdAdd, MdDelete } from "react-icons/md";
+import { MdSave, MdArrowBack, MdVisibility } from "react-icons/md";
 import Link from "next/link";
+import { toast } from "sonner";
+import useFormStore from "@/store/useFormCaseStore"; // Importando a loja
 
 export default function NovoCaso() {
+  const { formData, setFormData, previewVisible, setPreviewVisible } =
+    useFormStore(); // Usando a loja, incluindo previewVisible e setPreviewVisible
+
+  const formatarMoeda = (valor: string) => {
+    const apenasNumeros = valor.replace(/\D/g, "");
+    const valorNumerico = parseFloat(apenasNumeros) / 100;
+    return valorNumerico.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
+  const handleValorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const valor = e.target.value.replace(/\D/g, "");
+    setFormData({ valorCausa: valor ? formatarMoeda(valor) : "" });
+  };
+
+  const salvarCaso = () => {
+    try {
+      const casosExistentes = JSON.parse(localStorage.getItem("casos") || "[]");
+      const novoCaso = {
+        id: Date.now().toString(),
+        dataCriacao: new Date().toISOString(),
+        ...formData,
+      };
+      localStorage.setItem(
+        "casos",
+        JSON.stringify([...casosExistentes, novoCaso])
+      );
+      toast.success("Caso salvo com sucesso!");
+    } catch (error) {
+      console.error("Erro ao salvar caso:", error);
+      toast.error("Erro ao salvar o caso. Tente novamente.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Header />
@@ -38,171 +75,279 @@ export default function NovoCaso() {
             </Button>
           </Link>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <Card className="p-6">
-              <Tabs defaultValue="informacoes" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-6">
-                  <TabsTrigger value="informacoes">Informações</TabsTrigger>
-                  <TabsTrigger value="partes">Partes</TabsTrigger>
-                  <TabsTrigger value="documentos">Documentos</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="informacoes">
-                  <form className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Número do Processo</Label>
-                      <Input placeholder="Digite o número do processo" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Área do Direito</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione a área" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="trabalhista">Trabalhista</SelectItem>
-                          <SelectItem value="civil">Civil</SelectItem>
-                          <SelectItem value="previdenciario">Previdenciário</SelectItem>
-                          <SelectItem value="tributario">Tributário</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Vara/Tribunal</Label>
-                      <Input placeholder="Digite a vara ou tribunal" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Fase Processual</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione a fase" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="inicial">Fase Inicial</SelectItem>
-                          <SelectItem value="instrucao">Instrução</SelectItem>
-                          <SelectItem value="recursal">Fase Recursal</SelectItem>
-                          <SelectItem value="execucao">Execução</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>Data de Distribuição</Label>
-                        <Input type="date" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Valor da Causa</Label>
-                        <Input placeholder="R$ 0,00" />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Objeto da Ação</Label>
-                      <Textarea 
-                        placeholder="Descreva o objeto da ação..."
-                        className="min-h-[100px]"
-                      />
-                    </div>
-                  </form>
-                </TabsContent>
-
-                <TabsContent value="partes">
-                  <form className="space-y-6">
-                    <div className="space-y-4">
-                      <Label>Parte Autora</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o cliente" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="cliente1">João Silva Santos</SelectItem>
-                          <SelectItem value="cliente2">Maria Oliveira</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-4">
-                      <Label>Parte Ré</Label>
-                      <Input placeholder="Nome da parte ré" />
-                      <Input placeholder="CPF/CNPJ da parte ré" />
-                      <Textarea 
-                        placeholder="Endereço da parte ré"
-                        className="min-h-[80px]"
-                      />
-                    </div>
-
-                    <div className="space-y-4">
-                      <Label>Advogado(s) Contrário(s)</Label>
-                      <Input placeholder="Nome do advogado" />
-                      <Input placeholder="OAB" />
-                      <Input placeholder="Email/Telefone" />
-                    </div>
-                  </form>
-                </TabsContent>
-
-                <TabsContent value="documentos">
-                  <div className="space-y-6">
-                    <div className="flex justify-between items-center">
-                      <Label>Documentos Essenciais</Label>
-                      <Button variant="outline" size="sm" className="flex items-center gap-2">
-                        <MdAdd size={16} />
-                        Adicionar Documento
-                      </Button>
-                    </div>
-
-                    <div className="space-y-4">
-                      <Card className="p-4">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-3">
-                            <MdAttachFile size={20} className="text-blue-500" />
-                            <div>
-                              <p className="font-medium">Petição Inicial</p>
-                              <p className="text-sm text-slate-500">PDF - 2.5MB</p>
-                            </div>
-                          </div>
-                          <Button variant="ghost" size="sm" className="text-red-500">
-                            <MdDelete size={18} />
-                          </Button>
-                        </div>
-                      </Card>
-
-                      <Card className="p-4">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-3">
-                            <MdAttachFile size={20} className="text-blue-500" />
-                            <div>
-                              <p className="font-medium">Procuração</p>
-                              <p className="text-sm text-slate-500">PDF - 1.2MB</p>
-                            </div>
-                          </div>
-                          <Button variant="ghost" size="sm" className="text-red-500">
-                            <MdDelete size={18} />
-                          </Button>
-                        </div>
-                      </Card>
-                    </div>
+              <Label htmlFor="numeroProcesso">Número do Processo</Label>
+              <Input
+                id="numeroProcesso"
+                placeholder="Digite o número do processo"
+                value={formData.numeroProcesso}
+                onChange={(e) =>
+                  setFormData({ numeroProcesso: e.target.value })
+                }
+              />
+              <div className="space-y-4 mt-4">
+                <div className="space-y-2">
+                  <Label>Área do Direito</Label>
+                  <Select
+                    onValueChange={(value) =>
+                      setFormData({ areaDireito: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione a área" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="trabalhista">Trabalhista</SelectItem>
+                      <SelectItem value="civil">Civil</SelectItem>
+                      <SelectItem value="previdenciario">
+                        Previdenciário
+                      </SelectItem>
+                      <SelectItem value="tributario">Tributário</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Vara/Tribunal</Label>
+                  <Input
+                    placeholder="Digite a vara ou tribunal"
+                    value={formData.vara}
+                    onChange={(e) => setFormData({ vara: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Fase Processual</Label>
+                  <Select
+                    onValueChange={(value) =>
+                      setFormData({ faseProcessual: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione a fase" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="inicial">Fase Inicial</SelectItem>
+                      <SelectItem value="instrucao">Instrução</SelectItem>
+                      <SelectItem value="recursal">Fase Recursal</SelectItem>
+                      <SelectItem value="execucao">Execução</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Data de Distribuição</Label>
+                    <Input
+                      type="date"
+                      value={formData.dataDistribuicao}
+                      onChange={(e) =>
+                        setFormData({ dataDistribuicao: e.target.value })
+                      }
+                    />
                   </div>
-                </TabsContent>
-              </Tabs>
+                  <div className="space-y-2">
+                    <Label>Valor da Causa</Label>
+                    <Input
+                      placeholder="R$ 0,00"
+                      value={formData.valorCausa}
+                      onChange={handleValorChange}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Objeto da Ação</Label>
+                  <Textarea
+                    placeholder="Descreva o objeto da ação..."
+                    className="min-h-[100px]"
+                    value={formData.objetoAcao}
+                    onChange={(e) =>
+                      setFormData({ objetoAcao: e.target.value })
+                    }
+                  />
+                </div>
+                {/* Campo Parte Autora - Adicionado */}
+                <div className="space-y-2">
+                  <Label>Parte Autora</Label>
+                  <Input
+                    placeholder="Digite o nome da Parte Autora"
+                    value={formData.parteAutora}
+                    onChange={(e) =>
+                      setFormData({ parteAutora: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
             </Card>
           </div>
-
           <div className="space-y-6">
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4">Ações</h3>
               <div className="space-y-4">
-                <Button className="w-full flex items-center gap-2">
+                <Button
+                  className="w-full flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
+                  onClick={salvarCaso}
+                >
                   <MdSave size={18} />
                   Salvar Caso
                 </Button>
+                <Button
+                  variant="outline"
+                  className="w-full flex items-center gap-2"
+                  onClick={() => setPreviewVisible(true)} // Usando setPreviewVisible do Zustand
+                >
+                  <MdVisibility size={18} />
+                  Visualizar
+                </Button>
               </div>
             </Card>
+            {/* Modal de Visualização */}
+            {previewVisible && ( // Usando previewVisible do Zustand
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <Card className="w-full max-w-3xl max-h-[80vh] overflow-y-auto">
+                  <div className="p-6 space-y-6">
+                    <div className="flex justify-between items-center">
+                      <h2 className="text-xl font-bold">
+                        Visualização do Caso
+                      </h2>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setPreviewVisible(false)} // Usando setPreviewVisible do Zustand
+                      ></Button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <h3 className="font-medium text-slate-500">
+                            Número do Processo
+                          </h3>
+                          <p>{formData.numeroProcesso || "Não informado"}</p>
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-slate-500">
+                            Área do Direito
+                          </h3>
+                          <p>{formData.areaDireito || "Não selecionada"}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <h3 className="font-medium text-slate-500">
+                            Vara/Tribunal
+                          </h3>
+                          <p>{formData.vara || "Não informado"}</p>
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-slate-500">
+                            Fase Processual
+                          </h3>
+                          <p>{formData.faseProcessual || "Não selecionada"}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <h3 className="font-medium text-slate-500">
+                            Data de Distribuição
+                          </h3>
+                          <p>{formData.dataDistribuicao || "Não informada"}</p>
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-slate-500">
+                            Valor da Causa
+                          </h3>
+                          <p>{formData.valorCausa || "Não informado"}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-500">
+                          Objeto da Ação
+                        </h3>
+                        <p className="whitespace-pre-line">
+                          {formData.objetoAcao || "Não informado"}
+                        </p>
+                      </div>
+                      <hr className="my-4 border-slate-200 dark:border-slate-700" />
+                      <div>
+                        <h3 className="font-medium text-slate-500">
+                          Parte Autora
+                        </h3>
+                        <p>{formData.parteAutora || "Não informado"}</p>{" "}
+                        {/* Exibindo Parte Autora */}
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-500">Parte Ré</h3>
+                        <div className="pl-4 border-l-2 border-slate-200 dark:border-slate-700">
+                          <p>
+                            <span className="text-slate-500">Nome:</span>{" "}
+                            {formData.parteRe.nome || "Não informado"}
+                          </p>
+                          <p>
+                            <span className="text-slate-500">CPF/CNPJ:</span>{" "}
+                            {formData.parteRe.cpfCnpj || "Não informado"}
+                          </p>
+                          <p>
+                            <span className="text-slate-500">Endereço:</span>{" "}
+                            {formData.parteRe.endereco || "Não informado"}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-500">
+                          Advogado(s) Contrário(s)
+                        </h3>
+                        <div className="pl-4 border-l-2 border-slate-200 dark:border-slate-700">
+                          <p>
+                            <span className="text-slate-500">Nome:</span>{" "}
+                            {formData.advogadoContrario.nome || "Não informado"}
+                          </p>
+                          <p>
+                            <span className="text-slate-500">OAB:</span>{" "}
+                            {formData.advogadoContrario.oab || "Não informado"}
+                          </p>
+                          <p>
+                            <span className="text-slate-500">Contato:</span>{" "}
+                            {formData.advogadoContrario.contato ||
+                              "Não informado"}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-500">
+                          Documentos ({formData.documentos.length})
+                        </h3>
+                        {formData.documentos.length > 0 ? (
+                          <div className="space-y-2 pl-4 border-l-2 border-slate-200 dark:border-slate-700">
+                            {formData.documentos.map((doc, index) => (
+                              <p key={index}>
+                                <span className="text-blue-500">•</span>{" "}
+                                {doc.nome} ({doc.tipo} - {doc.tamanho})
+                              </p>
+                            ))}
+                          </div>
+                        ) : (
+                          <p>Nenhum documento anexado</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                      <Button
+                        variant="outline"
+                        onClick={() => setPreviewVisible(false)} // Usando setPreviewVisible do Zustand
+                      >
+                        Fechar
+                      </Button>
+                      <Button
+                        className="bg-blue-600 hover:bg-blue-700"
+                        onClick={salvarCaso}
+                      >
+                        <MdSave className="mr-2" size={18} />
+                        Salvar Caso
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            )}
           </div>
         </div>
       </main>

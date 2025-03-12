@@ -14,7 +14,15 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { MdAdd, MdSearch, MdFolder, MdEdit, MdDelete, MdAttachFile, MdAccessTime } from "react-icons/md";
+import {
+  MdAdd,
+  MdSearch,
+  MdFolder,
+  MdEdit,
+  MdDelete,
+  MdAttachFile,
+  MdAccessTime,
+} from "react-icons/md";
 
 const statusCores = {
   ativo: "bg-green-100 text-green-800",
@@ -29,14 +37,14 @@ export default function Casos() {
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-        <div className="space-y-2">
-  <h1 className="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 mb-2">
-    Casos
-  </h1>
-  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md">
-    Gerencie seus processos e casos de forma eficiente.
-  </p>
-</div>
+          <div className="space-y-2">
+            <h1 className="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 mb-2">
+              Casos
+            </h1>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md">
+              Gerencie seus processos e casos de forma eficiente.
+            </p>
+          </div>
           <Link href="/dashboard/casos/novo">
             <Button className="flex items-center gap-2">
               <MdAdd size={18} />
@@ -63,7 +71,9 @@ export default function Casos() {
                   <SelectContent>
                     <SelectItem value="trabalhista">Trabalhista</SelectItem>
                     <SelectItem value="civil">Civil</SelectItem>
-                    <SelectItem value="previdenciario">Previdenciário</SelectItem>
+                    <SelectItem value="previdenciario">
+                      Previdenciário
+                    </SelectItem>
                     <SelectItem value="tributario">Tributário</SelectItem>
                   </SelectContent>
                 </Select>
@@ -99,7 +109,8 @@ export default function Casos() {
           <div className="lg:col-span-3">
             <Card className="p-6">
               <Tabs defaultValue="ativos" className="w-full">
-                <TabsList className="grid w-[400px] grid-cols-3 mb-6">
+                <TabsList className="grid w-[500px] grid-cols-4 mb-6">
+                <TabsTrigger value="novosCasos">Novos Casos</TabsTrigger>
                   <TabsTrigger value="ativos">Ativos</TabsTrigger>
                   <TabsTrigger value="arquivados">Arquivados</TabsTrigger>
                   <TabsTrigger value="concluidos">Concluídos</TabsTrigger>
@@ -112,10 +123,14 @@ export default function Casos() {
                       <div className="flex justify-between items-start">
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
-                            <h3 className="font-medium">Processo nº 1234-56.2024.5.15.0001</h3>
+                            <h3 className="font-medium">
+                              Processo nº 1234-56.2024.5.15.0001
+                            </h3>
                             <Badge className={statusCores.ativo}>Ativo</Badge>
                           </div>
-                          <p className="text-sm text-slate-600">Cliente: João Silva Santos</p>
+                          <p className="text-sm text-slate-600">
+                            Cliente: João Silva Santos
+                          </p>
                           <div className="flex items-center gap-2">
                             <Badge variant="outline">Trabalhista</Badge>
                             <Badge variant="outline">Fase Inicial</Badge>
@@ -132,7 +147,11 @@ export default function Casos() {
                           <Button variant="outline" size="sm">
                             <MdEdit className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm" className="text-red-500">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-500"
+                          >
                             <MdDelete className="w-4 h-4" />
                           </Button>
                         </div>
@@ -143,10 +162,16 @@ export default function Casos() {
                       <div className="flex justify-between items-start">
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
-                            <h3 className="font-medium">Processo nº 5678-90.2024.8.26.0000</h3>
-                            <Badge className={statusCores.suspenso}>Suspenso</Badge>
+                            <h3 className="font-medium">
+                              Processo nº 5678-90.2024.8.26.0000
+                            </h3>
+                            <Badge className={statusCores.suspenso}>
+                              Suspenso
+                            </Badge>
                           </div>
-                          <p className="text-sm text-slate-600">Cliente: Empresa XYZ Ltda</p>
+                          <p className="text-sm text-slate-600">
+                            Cliente: Empresa XYZ Ltda
+                          </p>
                           <div className="flex items-center gap-2">
                             <Badge variant="outline">Civil</Badge>
                             <Badge variant="outline">Recursal</Badge>
@@ -163,7 +188,11 @@ export default function Casos() {
                           <Button variant="outline" size="sm">
                             <MdEdit className="w-4 h-4" />
                           </Button>
-                          <Button variant="outline" size="sm" className="text-red-500">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-500"
+                          >
                             <MdDelete className="w-4 h-4" />
                           </Button>
                         </div>
@@ -171,11 +200,9 @@ export default function Casos() {
                     </Card>
                   </div>
                 </TabsContent>
-
                 <TabsContent value="arquivados">
                   {/* Archived cases list */}
                 </TabsContent>
-
                 <TabsContent value="concluidos">
                   {/* Completed cases list */}
                 </TabsContent>

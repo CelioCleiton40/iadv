@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DetalhesCompromissoDialog } from "@/components/agenda/detalhes-compromisso-dialog";
 
 export default function DashboardPage() {
   return (
@@ -169,13 +170,17 @@ export default function DashboardPage() {
                       14:00 - Fórum Central
                     </p>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full sm:w-auto"
-                  >
-                    Ver Detalhes
-                  </Button>
+                  <DetalhesCompromissoDialog
+                      compromisso={{
+                        titulo: "Audiência Trabalhista",
+                        tipo: "Audiência",
+                        data: "2024-01-20",
+                        horario: "09:00",
+                        cliente: "João Silva",
+                        processo: "1234-56.2024.5.15.0001",
+                        descricao: "Audiência de instrução e julgamento",
+                      }}
+                    />
                 </div>
               </div>
             ))}
@@ -210,7 +215,7 @@ export default function DashboardPage() {
         <Card className="p-6 bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition-shadow rounded-lg">
           <div className="flex flex-col space-y-2">
             <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100">
-              TJSP
+              TJRN
             </h3>
             <div className="space-y-1">
               <p className="text-sm text-slate-600 dark:text-slate-400">

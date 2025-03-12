@@ -307,7 +307,7 @@ export default function Home() {
               <input
                 type="email"
                 placeholder="Seu melhor e-mail"
-                className="flex-1 px-6 py-4 rounded-xl text-slate-800 dark:text-white bg-white dark:bg-slate-800 border-2 border-transparent focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none"
+                className="flex-1 px-6 py-1 rounded-xl text-slate-800 dark:text-white bg-white dark:bg-slate-800 border-2 border-transparent focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none"
               />
               <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 px-8">
                 Inscrever-se
