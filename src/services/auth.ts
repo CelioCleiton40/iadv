@@ -1,9 +1,10 @@
 import { z } from "zod";
+import bcrypt from "bcryptjs";
 
 const registerSchema = z.object({
-  firstName: z.string().min(2, "Nome inválido"),
-  lastName: z.string().min(2, "Sobrenome inválido"),
-  email: z.string().email("E-mail inválido"),
+  firstName: z.string().trim().min(2, "Nome inválido"),
+  lastName: z.string().trim().min(2, "Sobrenome inválido"),
+  email: z.string().trim().toLowerCase().email("E-mail inválido"),
   password: z.string().min(8, "Senha deve ter pelo menos 8 caracteres"),
 });
 
@@ -14,18 +15,20 @@ export async function registerUser(userData: {
   password: string;
 }) {
   try {
-    // Validação dos dados
+    // Validação e sanitização
     const validatedData = registerSchema.parse(userData);
+
+    // Criptografa a senha antes de enviar ao backend
+    const hashedPassword = await bcrypt.hash(validatedData.password, 10);
+    const sanitizedData = { ...validatedData, password: hashedPassword };
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // Timeout de 10 segundos
 
     const response = await fetch("/api/auth/register", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(validatedData),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(sanitizedData),
       signal: controller.signal,
     });
 
@@ -33,14 +36,7 @@ export async function registerUser(userData: {
 
     if (!response.ok) {
       const errorData = await response.json();
-      const errorMessage =
-        errorData.message ||
-        (response.status === 400
-          ? "Dados inválidos"
-          : response.status === 409
-          ? "E-mail já registrado"
-          : "Erro desconhecido");
-      throw new Error(errorMessage);
+      throw new Error(errorData.message || "Erro ao registrar usuário");
     }
 
     return await response.json();
@@ -57,42 +53,42 @@ interface LoginData {
 
 export async function loginUser(credentials: LoginData) {
   try {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(credentials),
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: credentials.email.trim().toLowerCase(), // Normaliza o e-mail
+        password: credentials.password,
+      }),
     });
 
     if (!response.ok) {
-      throw new Error('Credenciais inválidas');
+      throw new Error("Credenciais inválidas");
     }
 
     const data = await response.json();
-    
-    // Armazena o token no localStorage
+
     if (data.token) {
-      localStorage.setItem('auth_token', data.token);
+      sessionStorage.setItem("auth_token", data.token); // Usa sessionStorage para mais segurança
     }
 
     return data;
   } catch (error) {
-    throw new Error('Erro ao realizar login');
+    throw new Error("Erro ao realizar login");
   }
 }
 
 export async function logoutUser() {
   try {
-    localStorage.removeItem('auth_token');
-    // Adicione aqui qualquer lógica adicional de logout
+    sessionStorage.removeItem("auth_token");
+    // Adicione outras operações necessárias para o logout
   } catch (error) {
-    console.error('Erro ao realizar logout:', error);
+    console.error("Erro ao realizar logout:", error);
   }
 }
 
 export function getAuthToken() {
-  return localStorage.getItem('auth_token');
+  return sessionStorage.getItem("auth_token");
 }
 
 export function isAuthenticated() {

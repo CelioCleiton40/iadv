@@ -14,7 +14,7 @@ export default function ForgotPasswordPage() {
               iAdv Manager
             </h1>
             <p className="text-slate-600 dark:text-slate-400">
-              Sistema de Gestão para Advogados
+              Sistema de Gestão
             </p>
           </div>
 

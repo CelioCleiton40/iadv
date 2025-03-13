@@ -1,7 +1,6 @@
-import { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { compare } from "bcryptjs";
-
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt, { compare } from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -13,40 +12,35 @@ export const authOptions: NextAuthOptions = {
       name: "Credenciais",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Senha", type: "password" }
+        password: { label: "Senha", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error("E-mail e senha são obrigatórios.");
         }
 
-        // TODO: Replace with actual user lookup from database
+        // Mock de usuário para testes
         const mockUser = {
-          id: '1',
-          email: 'test@example.com',
-          password: 'hashedPassword',
-          name: 'Test User'
+          id: "1",
+          email: "test@example.com",
+          password: await bcrypt.hash("12345678", 10), // Senha mockada (criptografada)
+          name: "Test User",
         };
 
-        try {
-          const isValid = await compare(credentials.password, mockUser.password);
+        // Simula a comparação da senha (bcrypt)
+        const isValid = await compare(credentials.password, mockUser.password);
 
-          if (!isValid) {
-            return null;
-          }
-
-          return {
-            id: mockUser.id,
-            email: mockUser.email,
-            name: mockUser.name
-          };
-          
-        } catch (error) {
-          console.error('Auth error:', error);
-          return null;
+        if (!isValid) {
+          throw new Error("Credenciais inválidas.");
         }
-      }
-    })
+
+        return {
+          id: mockUser.id,
+          email: mockUser.email,
+          name: mockUser.name,
+        };
+      },
+    }),
   ],
   pages: {
     signIn: "/login",
@@ -54,12 +48,22 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      // Adicionar claims personalizadas ao token
-      return token
+      if (user) {
+        token.id = user.id; 
+      }
+      return token;
     },
     async session({ session, token }) {
-      // Personalizar dados da sessão
-      return session
-    }
-  }
-}
+      if (token?.id) {
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            id: token.id, 
+          },
+        };
+      }
+      return session;
+    },
+  },
+};

@@ -12,6 +12,7 @@ export function Header() {
   const navLinks = [
     { href: "/recursos", label: "Recursos" },
     { href: "/sobre", label: "Sobre" },
+    { href: "/contato", label: "Contato" },
   ];
 
   return (
