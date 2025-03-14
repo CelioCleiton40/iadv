@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
@@ -13,7 +12,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerUser } from "@/services/auth";
 import { toast } from "sonner";
-import useAuthStore from "@/store/registerStore"; // Importa a store Zustand
+import { registerStore } from "@/store/registerStore";
+import DOMPurify from "dompurify";
+import Image from "next/image";
+import GoogleIcon from "@/assets/google-icone.svg"; // Ícone do Google
+import CompanyLogo from "@/assets/company-logo.png"; // Logo da empresa
+import LawImage from "@/assets/law-image.jpg"; // Imagem relacionada à área jurídica
 
 // Esquema de validação Zod
 const registerSchema = z
@@ -29,13 +33,11 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-type RegisterFormData = z.infer<typeof registerSchema>;
-
 export function RegisterForm({
   className,
   ...props
-}: React.ComponentProps<"div">) {
-  const { setUser } = useAuthStore(); // Hook para Zustand
+}: { className?: string } & React.HTMLAttributes<HTMLDivElement>) {
+  const { setUser } = registerStore();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,165 +45,185 @@ export function RegisterForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormData>({
+  } = useForm({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
+  const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     try {
       setIsLoading(true);
-      const newUser = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password,
+
+      // Sanitização das entradas para evitar XSS
+      const sanitizedData = {
+        firstName: DOMPurify.sanitize(data.firstName),
+        lastName: DOMPurify.sanitize(data.lastName),
+        email: DOMPurify.sanitize(data.email),
+        password: data.password, // Backend deve criptografar a senha
       };
 
-      await registerUser(newUser); // Registra o usuário
+      // Chamada ao backend para registrar o usuário
+      await registerUser(sanitizedData);
 
+      // Armazena dados do usuário no store (evite armazenar senhas ou tokens sensíveis)
       setUser({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-      }); // Atualiza o Zustand com os dados do usuário
+        firstName: sanitizedData.firstName,
+        lastName: sanitizedData.lastName,
+        email: sanitizedData.email,
+      });
 
+      // Feedback para o usuário
       toast.success("Cadastro realizado com sucesso!");
       router.push("/perfil");
     } catch (error) {
+      // Evita expor informações sensíveis ao usuário final
+      console.error("Erro interno ao registrar usuário:", error);
       toast.error("Erro ao realizar cadastro. Tente novamente.");
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden border-slate-200 dark:border-slate-800">
-        <CardContent className="grid p-0 md:grid-cols-2">
-          {/* Formulário */}
-          <form
-            className="p-6 md:p-8 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900"
-            onSubmit={handleSubmit(onSubmit)}
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8",
+        className
+      )}
+      {...props}
+    >
+      {/* Header com Logo e Imagem */}
+      <div className="flex flex-col md:flex-row w-full max-w-7xl bg-white rounded-lg shadow-md overflow-hidden">
+        {/* Imagem Elegante */}
+        <div className="hidden md:block md:w-1/2 relative">
+        <div>
+      <CompanyLogo width={24} height={24} />
+    </div>
+        </div>
+
+        {/* Formulário */}
+        <div className="w-full md:w-1/2 p-6 sm:p-8">
+          <div className="flex items-center justify-between mb-6">
+            {/* Logo da Empresa */}
+          <Image src={LawImage} alt="Imagem de uma pessoa trabalhando em um escritório" width={300} height={300} />
+            <h1 className="text-xl font-semibold text-gray-800 hidden md:block">
+              Cadastro
+            </h1>
+          </div>
+
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-4 md:hidden">
+            Criar Conta
+          </h2>
+          <p className="text-center text-sm text-gray-600 mb-6">
+            Preencha os dados para se cadastrar
+          </p>
+
+          {/* Botão de Login com Google */}
+          <Button
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2 mb-4"
           >
-            <div className="flex flex-col gap-6">
-              {/* Cabeçalho */}
-              <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600">
-                  Criar Conta
-                </h1>
-                <p className="text-balance text-slate-600 dark:text-slate-400">
-                  Preencha os dados para se cadastrar
-                </p>
+            <Image src={GoogleIcon} alt="Ícone do Google" width={24} height={24} />
+            Cadastrar com Google
+          </Button>
+
+          {/* Divisor */}
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-4 text-gray-500">Ou</span>
+            </div>
+          </div>
+
+          {/* Formulário */}
+          <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                  Nome
+                </Label>
+                <Input
+                  id="firstName"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  {...register("firstName")}
+                />
+                {errors.firstName && (
+                  <p className="text-red-500 text-sm">{errors.firstName.message}</p>
+                )}
               </div>
-
-              {/* Campos do formulário */}
-              <div className="grid gap-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="firstName">Nome</Label>
-                    <Input
-                      id="firstName"
-                      type="text"
-                      {...register("firstName")}
-                      className="border-slate-200 dark:border-slate-800"
-                    />
-                    {errors.firstName && (
-                      <p className="text-red-500">{errors.firstName.message}</p>
-                    )}
-                  </div>
-
-                  <div className="grid gap-2">
-                    <Label htmlFor="lastName">Sobrenome</Label>
-                    <Input
-                      id="lastName"
-                      type="text"
-                      {...register("lastName")}
-                      className="border-slate-200 dark:border-slate-800"
-                    />
-                    {errors.lastName && (
-                      <p className="text-red-500">{errors.lastName.message}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="email">E-mail</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    {...register("email")}
-                    className="border-slate-200 dark:border-slate-800"
-                  />
-                  {errors.email && (
-                    <p className="text-red-500">{errors.email.message}</p>
-                  )}
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Senha</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    {...register("password")}
-                    className="border-slate-200 dark:border-slate-800"
-                  />
-                  {errors.password && (
-                    <p className="text-red-500">{errors.password.message}</p>
-                  )}
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="confirmPassword">Confirmar Senha</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    {...register("confirmPassword")}
-                    className="border-slate-200 dark:border-slate-800"
-                  />
-                  {errors.confirmPassword && (
-                    <p className="text-red-500">
-                      {errors.confirmPassword.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600"
-                disabled={isLoading}
-              >
-                {isLoading ? "Cadastrando..." : "Cadastrar"}
-              </Button>
-
-              <div className="text-center text-sm text-slate-600 dark:text-slate-400">
-                Já tem uma conta?{" "}
-                <Link
-                  href="/login"
-                  className="text-slate-800 dark:text-slate-200 underline underline-offset-4 hover:text-slate-900 dark:hover:text-white"
-                >
-                  Faça login
-                </Link>
+              <div>
+                <Label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                  Sobrenome
+                </Label>
+                <Input
+                  id="lastName"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  {...register("lastName")}
+                />
+                {errors.lastName && (
+                  <p className="text-red-500 text-sm">{errors.lastName.message}</p>
+                )}
               </div>
             </div>
+            <div>
+              <Label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                E-mail
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Senha
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                {...register("password")}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password.message}</p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                Confirmar Senha
+              </Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                {...register("confirmPassword")}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
+              )}
+            </div>
+            <Button
+              type="submit"
+              className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md disabled:bg-gray-400"
+              disabled={isLoading}
+            >
+              {isLoading ? "Cadastrando..." : "Cadastrar"}
+            </Button>
           </form>
 
-          <div className="relative hidden bg-muted md:block">
-            <img
-              src="https://images.pexels.com/photos/5669619/pexels-photo-5669619.jpeg"
-              alt="Escritório de Advocacia"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.3] dark:grayscale"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 to-slate-900/20" />
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="text-center text-xs text-slate-500 dark:text-slate-400">
-        Ao se cadastrar, você concorda com nossos{" "}
-        <Link href="/terms">Termos de Serviço</Link> e{" "}
-        <Link href="/politica-privacidade">Política de Privacidade</Link>.
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Já tem uma conta?{" "}
+            <Link href="/login" className="text-indigo-600 hover:text-indigo-700">
+              Faça login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
