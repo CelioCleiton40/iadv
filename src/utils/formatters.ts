@@ -1,13 +1,21 @@
 "use client"
 
-export const formatCurrency = (value: string): string => {
-    const numericValue = value.replace(/\D/g, "");
-    if (numericValue) {
-        const numberValue = parseInt(numericValue, 10) / 100;
-        return numberValue.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-        });
+export const formatCurrency = (value: number | string | undefined | null) => {
+    if (value === undefined || value === null || value === '') {
+        return '';
     }
-    return "";
+    const num = typeof value === 'string' ? parseFloat(value) : value;
+    return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    }).format(num);
+};
+
+export const parseCurrencyInput = (value: string): number | undefined => {
+    if (!value) {
+        return undefined;
+    }
+    const cleanedValue = value.replace(/[^\d,-]/g, '').replace(',', '.');
+    const parsed = parseFloat(cleanedValue);
+    return isNaN(parsed) ? undefined : parsed;
 };

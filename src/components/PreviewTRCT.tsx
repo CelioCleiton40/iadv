@@ -123,35 +123,39 @@ export const PreviewTRCT: React.FC<PreviewTRCTProps> = ({
                             <tbody>
                                 <tr>
                                     <td className="border p-2">Saldo de Salário ({formData.diasTrabalhados} dias)</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.saldoSalario)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.saldoSalario))}</td>
                                 </tr>
                                 <tr>
                                     <td className="border p-2">13º Salário Proporcional</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.decimoTerceiro)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.decimoTerceiro))}</td>
                                 </tr>
                                 <tr>
                                     <td className="border p-2">Férias Vencidas</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.feriasVencidas)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.feriasVencidas))}</td>
                                 </tr>
                                 <tr>
-                                    <td className="border p-2">Férias Proporcionais + 1/3</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.feriasProporcional)}</td>
+                                    <td className="border p-2">Férias Proporcionais</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.feriasProporcional))}</td>
+                                </tr>
+                                <tr>
+                                    <td className="border p-2">1/3 Constitucional sobre Férias Proporcionais</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.umTercoFeriasProporcional))}</td>
                                 </tr>
                                 <tr>
                                     <td className="border p-2">Aviso Prévio Indenizado</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.avisoPrevio)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.avisoPrevio))}</td>
                                 </tr>
                                 <tr>
                                     <td className="border p-2">Multa FGTS (40% ou 20%)</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.multaFgts)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.multaFgts))}</td>
                                 </tr>
                                 <tr>
                                     <td className="border p-2">Outras Verbas</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.outrasVerbas)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.outrasVerbas))}</td>
                                 </tr>
                                 <tr className="bg-slate-100 dark:bg-slate-700 font-bold">
                                     <td className="border p-2">Total de Proventos</td>
-                                    <td className="border p-2 text-right">{formatCurrency(totalProventos)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(totalProventos))}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -167,19 +171,19 @@ export const PreviewTRCT: React.FC<PreviewTRCTProps> = ({
                             <tbody>
                                 <tr>
                                     <td className="border p-2">INSS</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.inss)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.inss))}</td>
                                 </tr>
                                 <tr>
                                     <td className="border p-2">IRRF</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.irrf)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.irrf))}</td>
                                 </tr>
                                 <tr>
                                     <td className="border p-2">Outros Descontos</td>
-                                    <td className="border p-2 text-right">{formatCurrency(formData.outrosDescontos)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(formData.outrosDescontos))}</td>
                                 </tr>
                                 <tr className="bg-slate-100 dark:bg-slate-700 font-bold">
                                     <td className="border p-2">Total de Descontos</td>
-                                    <td className="border p-2 text-right">{formatCurrency(totalDescontos)}</td>
+                                    <td className="border p-2 text-right">{formatCurrency(String(totalDescontos))}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -187,7 +191,7 @@ export const PreviewTRCT: React.FC<PreviewTRCTProps> = ({
                         <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                             <div className="flex justify-between items-center">
                                 <h3 className="text-xl font-bold">Valor Líquido a Receber:</h3>
-                                <span className="text-xl font-bold">{formatCurrency(valorLiquido)}</span>
+                                <span className="text-xl font-bold">{formatCurrency(String(valorLiquido))}</span>
                             </div>
                         </div>
                     </div>

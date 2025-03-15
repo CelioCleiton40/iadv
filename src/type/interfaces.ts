@@ -25,6 +25,38 @@ export interface Juiz {
     area: string;
 }
 
+export const initialFormState: TRCTFormData = {
+    empregadorNome: "",
+    empregadorCnpj: "",
+    empregadorEndereco: "",
+
+    trabalhadorNome: "",
+    trabalhadorCpf: "",
+    trabalhadorCtps: "",
+    trabalhadorPis: "",
+
+    dataAdmissao: "",
+    dataAviso: "",
+    dataAfastamento: "",
+    motivoRescisao: "pedido",
+
+    salarioBase: 0,
+    mesesTrabalhados: 0,
+    diasTrabalhados: 0,
+    saldoSalario: 0,
+    decimoTerceiro: 0,
+    feriasVencidas: 0,
+    feriasProporcional: 0,
+    umTercoFeriasProporcional: 0,
+    avisoPrevio: 0,
+    multaFgts: 0,
+    outrasVerbas: 0,
+
+    inss: 0,
+    irrf: 0,
+    outrosDescontos: 0
+};
+
 export interface TRCTFormData {
     // Dados do Empregador
     empregadorNome: string;
@@ -51,6 +83,7 @@ export interface TRCTFormData {
     decimoTerceiro: number;
     feriasVencidas: number;
     feriasProporcional: number;
+    umTercoFeriasProporcional: number;
     avisoPrevio: number;
     multaFgts: number;
     outrasVerbas: number;
@@ -61,41 +94,10 @@ export interface TRCTFormData {
     outrosDescontos: number;
 }
 
-export const initialFormState: TRCTFormData = {
-    empregadorNome: "",
-    empregadorCnpj: "",
-    empregadorEndereco: "",
-
-    trabalhadorNome: "",
-    trabalhadorCpf: "",
-    trabalhadorCtps: "",
-    trabalhadorPis: "",
-
-    dataAdmissao: "",
-    dataAviso: "",
-    dataAfastamento: "",
-    motivoRescisao: "pedido",
-
-    salarioBase: 0,
-    mesesTrabalhados: 0,
-    diasTrabalhados: 0,
-    saldoSalario: 0,
-    decimoTerceiro: 0,
-    feriasVencidas: 0,
-    feriasProporcional: 0,
-    avisoPrevio: 0,
-    multaFgts: 0,
-    outrasVerbas: 0,
-
-    inss: 0,
-    irrf: 0,
-    outrosDescontos: 0
-};
-
 export const motivosRescisao = {
-    pedido: "Pedido de demissão pelo empregado",
-    semJustaCausa: "Dispensa sem justa causa pelo empregador",
-    comJustaCausa: "Dispensa com justa causa pelo empregador",
-    acordoMutuo: "Acordo mútuo entre as partes",
-    terminoContrato: "Término de contrato por prazo determinado"
+    pedido: "Pedido de Demissão",
+    semJustaCausa: "Dispensa Sem Justa Causa",
+    comJustaCausa: "Dispensa Por Justa Causa",
+    acordoMutuo: "Rescisão Por Acordo Entre Empregado e Empregador",
+    terminoContrato: "Término de Contrato Por Prazo Determinado"
 };

@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MdSave, MdPreview, MdCalculate } from "react-icons/md";
 import { useState, useEffect } from "react";
-import { TRCTFormData, initialFormState, motivosRescisao } from "@/type/interfaces"; // Vamos criar este arquivo de tipos
+import { TRCTFormData, initialFormState, motivosRescisao } from "@/type/interfaces";
 import { calcularRescisao } from "@/utils/calculations";
 import { formatCurrency } from "@/utils/formatters";
 
@@ -13,7 +13,6 @@ import { DadosTrabalhador } from "@/components/TRCTForm/DadosTrabalhador";
 import { DadosContrato } from "@/components/TRCTForm/DadosContrato";
 import { DadosFinanceiros } from "@/components/TRCTForm/DadosFinanceiros";
 import { Descontos } from "@/components/TRCTForm/Descontos";
-
 
 interface TRCTFormProps {
     formData: TRCTFormData;
@@ -56,7 +55,6 @@ export const TRCTForm: React.FC<TRCTFormProps> = ({
 
                 {/* Descontos */}
                 <Descontos formData={formData} handleInputChange={handleInputChange} />
-
 
                 {/* Actions Buttons */}
                 <div className="flex justify-end gap-4 mt-8">
