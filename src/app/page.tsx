@@ -410,7 +410,6 @@ export default function Home() {
           <MdQuestionAnswer size={18} /> Suporte
         </Link>
       </motion.div>
-
       <Footer />
     </div>
   );

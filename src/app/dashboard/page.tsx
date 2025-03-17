@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/dashboard/layout";
@@ -18,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 import DOMPurify from "dompurify";
 import { DetalhesCompromissoDialog } from "@/components/agenda/detalhes-compromisso-dialog";
 
@@ -118,11 +120,11 @@ export default function DashboardPage() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
                 <MdPerson className="mr-2 h-4 w-4" />
-                Meu Perfil
+                <Link href="/dashboard/perfil">Meu Perfil</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <MdSettings className="mr-2 h-4 w-4" />
-                Configurações
+                <Link href="/dashboard/configuracoes">Configurações</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <MdLogout className="mr-2 h-4 w-4" />

@@ -72,7 +72,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               {
                 href: "/dashboard/juiz-prevento",
                 icon: MdGavel,
-                label: "Configurações",
+                label: "Magistrados",
               },
               {
                 href: "/dashboard/configuracoes",

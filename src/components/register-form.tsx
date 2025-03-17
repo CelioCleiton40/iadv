@@ -115,7 +115,7 @@ export function RegisterForm({
                 src={LawImage}
                 alt="Advocacia"
                 fill
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
+                style={{ objectFit: "cover", objectPosition: "center" }}
                 className="mix-blend-overlay opacity-60"
               />
             </div>
@@ -124,9 +124,12 @@ export function RegisterForm({
             <div className="relative z-20 p-8 flex flex-col h-full justify-between">
               <div>
                 <div className="mb-8">
-                  <h2 className="text-3xl font-bold mb-4">Bem-vindo ao iAdv Manager</h2>
+                  <h2 className="text-3xl font-bold mb-4">
+                    Bem-vindo ao iAdv Manager
+                  </h2>
                   <p className="text-white/80">
-                    Gerencie seus processos jurídicos com eficiência e segurança.
+                    Gerencie seus processos jurídicos com eficiência e
+                    segurança.
                   </p>
                 </div>
 
@@ -134,34 +137,65 @@ export function RegisterForm({
                   <div className="mb-6">
                     <div className="flex items-center mb-3">
                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center mr-3">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          ></path>
                         </svg>
                       </div>
-                      <p className="font-medium">Gestão completa de processos</p>
+                      <p className="font-medium">
+                        Gestão completa de processos
+                      </p>
                     </div>
                     <div className="flex items-center mb-3">
                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center mr-3">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          ></path>
                         </svg>
                       </div>
-                      <p className="font-medium">Controle financeiro integrado</p>
+                      <p className="font-medium">
+                        Controle financeiro integrado
+                      </p>
                     </div>
                     <div className="flex items-center">
                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center mr-3">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          ></path>
                         </svg>
                       </div>
-                      <p className="font-medium">Segurança e conformidade com LGPD</p>
+                      <p className="font-medium">
+                        Segurança e conformidade com LGPD
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="hidden lg:block text-sm text-white/70">
-                © {new Date().getFullYear()} iAdv Manager - Todos os direitos reservados
+                © {new Date().getFullYear()} iAdv Manager - Todos os direitos
+                reservados
               </div>
             </div>
           </div>
@@ -171,10 +205,10 @@ export function RegisterForm({
             <div className="max-w-md mx-auto">
               <div className="mb-8 flex justify-center">
                 <Image
-                  src="/logo-white.png"
+                  src="/assets/logo.png"
                   alt="iAdv Logo"
                   width={150}
-                  height={50}
+                  height={150}
                   className="mb-6"
                   priority
                 />
@@ -192,11 +226,6 @@ export function RegisterForm({
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="bg-white dark:bg-slate-800 px-4 text-slate-500 dark:text-slate-400">
-                    Ou cadastre-se com e-mail
-                  </span>
                 </div>
               </div>
 
@@ -263,7 +292,9 @@ export function RegisterForm({
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-red-500 text-sm">{errors.email.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {errors.email.message}
+                    </p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -283,7 +314,9 @@ export function RegisterForm({
                     />
                   </div>
                   {errors.password && (
-                    <p className="text-red-500 text-sm">{errors.password.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {errors.password.message}
+                    </p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -316,9 +349,25 @@ export function RegisterForm({
                 >
                   {isLoading ? (
                     <div className="flex items-center gap-2">
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Cadastrando...
                     </div>
@@ -328,6 +377,11 @@ export function RegisterForm({
                     </>
                   )}
                 </Button>
+                <div className="relative flex justify-center text-sm">
+                  <span className="bg-white dark:bg-slate-800 px-4 text-slate-500 dark:text-slate-400">
+                    Ou cadastre-se com e-mail
+                  </span>
+                </div>
               </form>
 
               {/* Botão de Login com Google (moved to bottom) */}
@@ -346,7 +400,10 @@ export function RegisterForm({
 
               <p className="text-center text-sm text-slate-600 dark:text-slate-400 mt-6">
                 Já tem uma conta?{" "}
-                <Link href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+                <Link
+                  href="/login"
+                  className="text-blue-600 hover:text-blue-700 font-medium"
+                >
                   Faça login
                 </Link>
               </p>

@@ -64,15 +64,16 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center mb-4"
         >
-          <div className="relative w-full max-w-[220px] h-16 mb-2">
-            <Image 
-              src="/logo.png" 
-              alt="iAdv Logo" 
-              fill
-              style={{ objectFit: 'contain' }}
-              priority
-            />
-          </div>
+          <div className="relative w-56 h-120 flex items-center justify-center mb-2">
+    <Image 
+      src="/assets/logo.png" 
+      alt="iAdv Logo"
+      width={100} 
+      height={150}
+      className="w-full h-full object-contain"
+      priority
+    />
+  </div>
           <div className="w-full flex items-center gap-4 my-4">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-600 to-transparent"></div>
             <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">Acesso ao Sistema</span>
