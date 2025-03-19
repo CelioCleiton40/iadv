@@ -133,11 +133,6 @@ export default function PrimeirosPassosPage() {
                 Voltar para Tutoriais
               </Link>
             </Button>
-            <Button asChild>
-              <Link href="/dashboard">
-                Ir para Dashboard
-              </Link>
-            </Button>
           </div>
         </div>
       </main>

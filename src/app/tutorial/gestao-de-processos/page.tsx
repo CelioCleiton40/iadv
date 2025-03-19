@@ -159,11 +159,6 @@ export default function GestaoProcessosPage() {
                 Voltar para Tutoriais
               </Link>
             </Button>
-            <Button asChild>
-              <Link href="/dashboard/casos">
-                Ir para Gestão de Casos
-              </Link>
-            </Button>
           </div>
         </div>
       </main>

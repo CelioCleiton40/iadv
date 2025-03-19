@@ -14,7 +14,7 @@ export default function GuiaApiPage() {
       method: "GET",
       path: "/api/processos",
       description: "Lista todos os processos",
-      example: `fetch('https://api.iadv.com/processos', {
+      example: `fetch('https://api.iadvmanager.com/processos', {
   headers: {
     'Authorization': 'Bearer seu_token'
   }
@@ -33,7 +33,7 @@ export default function GuiaApiPage() {
       method: "POST",
       path: "/api/clientes",
       description: "Cadastra um novo cliente",
-      example: `fetch('https://api.iadv.com/clientes', {
+      example: `fetch('https://api.iadvmanager.com/clientes', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer seu_token',
@@ -153,12 +153,6 @@ export default function GuiaApiPage() {
               <Link href="/documentacao">
                 <MdArrowBack className="mr-2" />
                 Voltar para Documentação
-              </Link>
-            </Button>
-            <Button asChild>
-              <Link href="https://api.iadv.com/docs" target="_blank">
-                <MdCode className="mr-2" />
-                Documentação Completa
               </Link>
             </Button>
           </div>

@@ -157,11 +157,6 @@ export default function RecursosAvancadosPage() {
                 Voltar para Tutoriais
               </Link>
             </Button>
-            <Button asChild>
-              <Link href="/dashboard/configuracoes">
-                Configurar Recursos
-              </Link>
-            </Button>
           </div>
         </div>
       </main>

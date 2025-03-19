@@ -11,8 +11,8 @@ import Link from "next/link";
 export default function AtualizacoesPage() {
   const versions = [
     {
-      version: "2.1.0",
-      date: "Janeiro 2024",
+      version: "1.0.0",
+      date: "Março 2025",
       type: "major",
       icon: MdNewReleases,
       changes: [
@@ -37,8 +37,8 @@ export default function AtualizacoesPage() {
       ]
     },
     {
-      version: "2.0.5",
-      date: "Dezembro 2023",
+      version: "1.0.1",
+      date: "Abril 2025",
       type: "patch",
       icon: MdBugReport,
       changes: [
@@ -55,7 +55,7 @@ export default function AtualizacoesPage() {
     },
     {
       version: "2.0.0",
-      date: "Novembro 2023",
+      date: "Novembro 2025",
       type: "major",
       icon: MdSpeed,
       changes: [

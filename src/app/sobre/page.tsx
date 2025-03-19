@@ -15,10 +15,10 @@ const stats = [
 ];
 
 const timeline = [
-  { year: "2020", event: "Fundação do iAdv Manager" },
-  { year: "2021", event: "Lançamento da primeira versão" },
-  { year: "2022", event: "Expansão para todo Brasil" },
-  { year: "2023", event: "Integração com tribunais" },
+  { year: "2025", event: "Fundação do iAdv Manager" },
+  { year: "2025", event: "Lançamento da primeira versão" },
+  { year: "2026", event: "Expansão para todo Brasil" },
+  { year: "2025", event: "Integração com tribunais" },
 ];
 
 const team = [
