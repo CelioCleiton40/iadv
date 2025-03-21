@@ -27,16 +27,13 @@ export function Header() {
 
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${
-      scrolled 
-        ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-sm" 
+      scrolled
+        ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-sm"
         : "bg-white dark:bg-slate-900"
     }`}>
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 group"
-        >
+        <Link href="/" className="flex items-center gap-2 group">
           <Image
             src="/assets/logo.png"
             alt="iAdv Logo"
@@ -76,7 +73,7 @@ export function Header() {
             asChild
             className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 transition-all duration-300 shadow-md hover:shadow-lg"
           >
-            <Link href="/register" className="flex items-center gap-2">
+            <Link href="/register" className="flex items-center gap-2" rel="noopener noreferrer">
               <MdLogin size={18} />
               Criar conta
             </Link>
@@ -130,7 +127,7 @@ export function Header() {
                     asChild
                     className="w-full justify-center bg-gradient-to-r from-blue-600 to-blue-700"
                   >
-                    <Link href="/register" className="flex items-center gap-2">
+                    <Link href="/register" className="flex items-center gap-2" rel="noopener noreferrer">
                       <MdLogin size={18} />
                       Criar conta
                     </Link>

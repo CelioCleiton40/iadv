@@ -11,6 +11,16 @@ const ContactInfo: React.FC = () => {
         console.warn(`Link inseguro detectado: ${url}`);
         return '#'; // Fallback para links inseguros
       }
+      
+      if (
+        parsedUrl.hostname !== 'linkedin.com' &&
+        parsedUrl.hostname !== 'instagram.com' &&
+        parsedUrl.hostname !== 'facebook.com' &&
+        parsedUrl.hostname !== 'wa.me'
+      ) {
+        console.warn(`URL de rede social inválida: ${url}`);
+        return '#';
+      }
       return url;
     } catch (error) {
       console.error(`URL inválida: ${url}`, error);

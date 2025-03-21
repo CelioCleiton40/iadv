@@ -67,7 +67,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           <div className="relative w-56 h-120 flex items-center justify-center mb-2">
     <Image 
       src="/assets/logo.png" 
-      alt="iAdv Logo"
+      alt="iAdv Manager Logo"
       width={100} 
       height={150}
       className="w-full h-full object-contain"

@@ -88,7 +88,9 @@ export default function Home() {
                     size="lg"
                     className="bg-blue-700 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 px-8 text-lg shadow-lg"
                   >
-                    <Link href="/precos">Comece Agora</Link>
+                    <Link href="/precos" 
+                    rel="noopener noreferrer"
+                    >Comece Agora</Link>
                   </Button>
                   <Button
                     asChild
@@ -96,7 +98,9 @@ export default function Home() {
                     size="lg"
                     className="border-blue-700 text-blue-700 hover:bg-blue-50 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-900/20 px-8 text-lg transition-all duration-300"
                   >
-                    <Link href="/recursos">Explorar Recursos</Link>
+                    <Link href="/recursos"
+                    rel="noopener noreferrer"
+                    >Explorar Recursos</Link>
                   </Button>
                 </motion.div>
 
@@ -238,7 +242,9 @@ export default function Home() {
                 size="lg"
                 className="bg-white text-blue-700 hover:bg-blue-50 px-8 text-lg"
               >
-                <Link href="/cadastro">Começar Agora</Link>
+                <Link href="/register"
+                rel="noopener noreferrer"
+                >Começar Agora</Link>
               </Button>
             </div>
           </div>
@@ -394,18 +400,21 @@ export default function Home() {
         <Link
           className="flex items-center gap-2 hover:text-blue-700 dark:hover:text-blue-500 transition-colors duration-300"
           href="/tutorial"
+          rel="noopener noreferrer"
         >
           <MdInfo size={20} /> Tutorial
         </Link>
         <Link
           className="flex items-center gap-2 hover:text-blue-700 dark:hover:text-blue-500 transition-colors duration-300"
           href="/documentacao"
+          rel="noopener noreferrer"
         >
           <MdArticle size={18} /> Documentação
         </Link>
         <Link
           className="flex items-center gap-2 hover:text-blue-700 dark:hover:text-blue-500 transition-colors duration-300"
           href="/suporte"
+          rel="noopener noreferrer"
         >
           <MdQuestionAnswer size={18} /> Suporte
         </Link>

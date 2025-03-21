@@ -1,10 +1,18 @@
 import { create } from "zustand";
 import { z } from "zod";
+import { Cliente } from "@/type/inter-face-client"; // Certifique-se de importar o tipo Cliente correto do seu progra
+import DOMPurify from "dompurify"; // Biblioteca para sanitização contra XSS
 
 // Esquema de validação com Zod
 const clienteSchema = z.object({
   tipo: z.string().min(1, "O tipo é obrigatório"),
-  nome: z.string().min(3, "O nome deve ter pelo menos 3 caracteres").trim(),
+  nome: z
+    .string()
+    .min(3, "O nome deve ter pelo menos 3 caracteres")
+    .trim()
+    .refine((value) => !/<[a-z][\s\S]*>/i.test(value), {
+      message: "Nome contém caracteres inválidos.",
+    }), // Proteção contra tags HTML
   cpfCnpj: z
     .string()
     .min(11, "CPF/CNPJ inválido")
@@ -23,38 +31,20 @@ const clienteSchema = z.object({
   estado: z.string().optional(),
   telefone: z.string().optional(),
   celular: z.string().optional(),
-  email: z.string().email("E-mail inválido").toLowerCase().trim().optional(),
+  email: z
+    .string()
+    .email("E-mail inválido")
+    .toLowerCase()
+    .trim()
+    .optional(),
   areaDireito: z.string().optional(),
-  observacoes: z.string().optional(),
+  observacoes: z
+    .string()
+    .optional()
+    .refine((value) => value ? !/<[a-z][\s\S]*>/i.test(value) : true, {
+      message: "Observações contém caracteres inválidos.",
+    }), // Proteção contra tags HTML
 });
-
-export interface Cliente {
-  tipo: string;
-  nome: string;
-  cpfCnpj: string;
-  rgIe: string;
-  dataNascimento: string;
-  estadoCivil: string;
-  endereco: string;
-  numero: string;
-  complemento: string;
-  bairro: string;
-  cep: string;
-  cidade: string;
-  estado: string;
-  telefone: string;
-  celular: string;
-  email: string;
-  areaDireito: string;
-  observacoes: string;
-}
-
-export interface ClienteStore {
-  clienteData: Cliente;
-  setClienteData: (newData: Partial<Cliente>) => void;
-  resetClienteData: () => void;
-  errors: Partial<Record<keyof Cliente, string>>; // Guarda os erros de validação
-}
 
 const initialState: Cliente = {
   tipo: "",
@@ -77,13 +67,28 @@ const initialState: Cliente = {
   observacoes: "",
 };
 
-const useClienteStore = create<ClienteStore>((set) => ({
+interface ClienteStore {
+  clienteData: Cliente;
+  errors: Partial<Record<keyof Cliente, string>>;
+  setClienteData: (newData: Partial<Cliente>) => void;
+  resetClienteData: () => void;
+}
+
+export const useClienteStore = create<ClienteStore>((set) => ({
   clienteData: initialState,
   errors: {}, // Inicializando os erros vazios
 
   setClienteData: (newData) => {
+    // Sanitização básica para evitar XSS
+    const sanitizedData = Object.fromEntries(
+      Object.entries(newData).map(([key, value]) => [
+        key,
+        typeof value === "string" ? DOMPurify.sanitize(value) : value,
+      ])
+    );
+
     // Faz a validação antes de atualizar o estado
-    const parsed = clienteSchema.safeParse({ ...newData });
+    const parsed = clienteSchema.safeParse(sanitizedData);
 
     if (!parsed.success) {
       const validationErrors: Partial<Record<keyof Cliente, string>> = {};
@@ -99,7 +104,7 @@ const useClienteStore = create<ClienteStore>((set) => ({
 
     // Se a validação passar, atualiza o estado e reseta erros
     set((state) => ({
-      clienteData: { ...state.clienteData, ...newData },
+      clienteData: { ...state.clienteData, ...sanitizedData },
       errors: {},
     }));
   },
@@ -110,5 +115,3 @@ const useClienteStore = create<ClienteStore>((set) => ({
       errors: {},
     }),
 }));
-
-export default useClienteStore;

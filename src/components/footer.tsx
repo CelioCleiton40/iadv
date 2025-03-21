@@ -17,27 +17,27 @@ export function Footer() {
           <div>
             <h4 className="font-medium mb-4">Produto</h4>
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link href="/recursos">Recursos</Link></li>
-              <li><Link href="/precos">Preços</Link></li>
-              <li><Link href="/seguranca">Segurança</Link></li>
+              <li><Link href="/recursos" rel="noopener noreferrer">Recursos</Link></li>
+              <li><Link href="/precos" rel="noopener noreferrer">Preços</Link></li>
+              <li><Link href="/seguranca" rel="noopener noreferrer">Segurança</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-medium mb-4">Suporte</h4>
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link href="/documentacao">Documentação</Link></li>
-              <li><Link href="/tutorial">Tutorial</Link></li>
-              <li><Link href="/faq">FAQ</Link></li>
+              <li><Link href="/documentacao" rel="noopener noreferrer">Documentação</Link></li>
+              <li><Link href="/tutorial" rel="noopener noreferrer">Tutorial</Link></li>
+              <li><Link href="/faq" rel="noopener noreferrer">FAQ</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-medium mb-4">Contato</h4>
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link href="/suporte">Suporte</Link></li>
-              <li><Link href="/contato">Contato comercial</Link></li>
-              <li><Link href="/sobre">Sobre nós</Link></li>
+              <li><Link href="/suporte" rel="noopener noreferrer">Suporte</Link></li>
+              <li><Link href="/contato" rel="noopener noreferrer">Contato comercial</Link></li>
+              <li><Link href="/sobre" rel="noopener noreferrer">Sobre nós</Link></li>
             </ul>
           </div>
         </div>

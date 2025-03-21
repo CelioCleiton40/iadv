@@ -16,13 +16,34 @@ const formDataSchema = z.object({
     recorrido: z.string().min(3, "Nome do recorrido inválido."),
     razoes: z.array(razaoSchema),
     pedidos: z.string().min(10, "Os pedidos devem ter pelo menos 10 caracteres."),
-    anexos: z.array(z.string().refine((file) => file.endsWith('.pdf') || file.endsWith('.docx'), {
-        message: "Formato de arquivo inválido! Apenas PDFs e DOCX são permitidos.",
-    })),
+    anexos: z.array(
+        z.string().refine((file) => file.endsWith('.pdf') || file.endsWith('.docx'), {
+            message: "Formato de arquivo inválido! Apenas PDFs e DOCX são permitidos.",
+        })
+    ).max(5, "No máximo 5 anexos são permitidos."),
 });
+
+interface Razao {
+    titulo: string;
+    conteudo: string;
+}
 
 interface FormDataRecurso extends z.infer<typeof formDataSchema> {}
 
+interface RecursoStore {
+    formData: FormDataRecurso;
+    showPreview: boolean;
+    errors: Partial<Record<keyof FormDataRecurso, string>>;
+    setFormData: (data: Partial<FormDataRecurso>) => void;
+    setShowPreview: (show: boolean) => void;
+    handleInputChange: <T extends keyof FormDataRecurso>(field: T, value: FormDataRecurso[T]) => void;
+    handleRazaoChange: (index: number, field: keyof Razao, value: string) => void;
+    addRazao: () => void;
+    removeRazao: (index: number) => void;
+    validateForm: () => boolean;
+    addAnexo: (file: string) => void;
+    removeAnexo: (index: number) => void;
+}
 
 export const useRecursoStore = create<RecursoStore>((set, get) => ({
     formData: {
@@ -42,7 +63,7 @@ export const useRecursoStore = create<RecursoStore>((set, get) => ({
     setFormData: (data) => {
         const parsed = formDataSchema.partial().safeParse({ ...get().formData, ...data });
         if (parsed.success) {
-            set({ formData: { ...get().formData, ...parsed.data }, errors: {} });
+            set({ formData: { ...get().formData, ...parsed.data as FormDataRecurso }, errors: {} });
         } else {
             const formattedErrors = Object.fromEntries(
                 parsed.error.errors.map((err) => [err.path.join('.'), err.message])
@@ -114,7 +135,8 @@ export const useRecursoStore = create<RecursoStore>((set, get) => ({
                 formData: { ...state.formData, anexos: [...state.formData.anexos, file] },
             }));
         } else {
-            alert(parsed.error.errors[0].message);
+            const errorMessage = parsed.error.errors[0].message;
+            set((state) => ({ errors: { ...state.errors, anexos: errorMessage } }));
         }
     },
 

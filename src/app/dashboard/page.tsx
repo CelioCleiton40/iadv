@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import DOMPurify from "dompurify";
+import DOMPurify from 'dompurify';
 import { DetalhesCompromissoDialog } from "@/components/agenda/detalhes-compromisso-dialog";
 
 // Função para validar URLs
@@ -40,7 +40,10 @@ const safeHref = (url: string): string => {
 
 // Função para sanitizar texto dinâmico
 const sanitizedText = (text: string): string => {
-  return DOMPurify.sanitize(text);
+  if (typeof window !== 'undefined') {
+    return DOMPurify.sanitize(text);
+  }
+  return text; // ou uma string vazia "", ou outra lógica de fallback adequada
 };
 
 // ErrorBoundary para capturar erros de renderização

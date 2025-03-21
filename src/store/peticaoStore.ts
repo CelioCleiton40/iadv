@@ -1,37 +1,6 @@
 import { create } from 'zustand';
-export interface Parte {
-    nome: string;
-    qualificacao: string;
-}
+import { FormData, PeticaoStore, PeticaoTemplates} from '@/type/inter-face-peticao';
 
-export interface FormData {
-    modelo: string;
-    comarca: string;
-    vara: string;
-    partes: Parte[];
-    dosFatos: string;
-    doDireito: string;
-    dosPedidos: string;
-    valorCausa: string;
-
-    // Campos da PARTE REQUERENTE:
-    requerenteNome: string;
-    requerenteNacionalidade: string;
-    requerenteEstadoCivil: string;
-    requerenteProfissao: string;
-    requerenteFiliacao: string;
-    requerenteRGNumero: string;
-    requerenteRGOrgaoExpedidor: string;
-    requerenteRGDataExpedicao: string;
-    requerenteCPF: string;
-    requerenteResidencia: string;
-    requerenteCidade: string;
-    requerenteCEP: string;
-    requerenteTelefone: string;
-    requerenteWhatsApp: string;
-    requerenteEmail: string;
-
-}
 
 const initialFormState: FormData = {
     modelo: "",
@@ -61,39 +30,6 @@ const initialFormState: FormData = {
     requerenteEmail: '',
 };
 
-
-interface PeticaoTemplates {
-    cobranca: {
-        titulo: string;
-        dosFatos: string;
-        doDireito: string;
-        dosPedidos: string;
-    };
-    indenizacao: {
-        titulo: string;
-        dosFatos: string;
-        doDireito: string;
-        dosPedidos: string;
-    };
-    obrigacao: {
-        titulo: string;
-        dosFatos: string;
-        doDireito: string;
-        dosPedidos: string;
-    };
-    despejo: {
-        titulo: string;
-        dosFatos: string;
-        doDireito: string;
-        dosPedidos: string;
-    };
-    juizadoEspecialCivel: { // Novo modelo adicionado aqui
-        titulo: string;
-        dosFatos: string;
-        doDireito: string;
-        dosPedidos: string;
-    };
-}
 
 const parteRequerenteInfo = `PARTE REQUERENTE: ${initialFormState.requerenteNome}, nacionalidade: ${initialFormState.requerenteNacionalidade}, estado civil: ${initialFormState.requerenteEstadoCivil}, profissão: ${initialFormState.requerenteProfissao}, filiação: ${initialFormState.requerenteFiliacao}, portador da Carteira de Identidade nº: ${initialFormState.requerenteRGNumero}, órgão expedidor/UF: ${initialFormState.requerenteRGOrgaoExpedidor}, data da expedição: ${initialFormState.requerenteRGDataExpedicao}, inscrito no CPF sob o nº: ${initialFormState.requerenteCPF}, residente e domiciliado na ${initialFormState.requerenteResidencia}, Cidade: ${initialFormState.requerenteCidade}, CEP: ${initialFormState.requerenteCEP}, telefone(s): ${initialFormState.requerenteTelefone}, WhatsApp: ${initialFormState.requerenteWhatsApp}, e-mail: ${initialFormState.requerenteEmail}, vem, à presença de Vossa Excelência, propor a presente  \n\n`;
 
@@ -141,43 +77,26 @@ const peticaoTemplates: PeticaoTemplates = {
 };
 
 
-
-interface PeticaoStore {
-    formData: FormData;
-    showPreview: boolean;
-    peticaoTemplates: PeticaoTemplates;
-
-    setFormData: (data: FormData) => void;
-    setShowPreview: (show: boolean) => void;
-    handleInputChange: <T extends keyof FormData>(field: T, value: FormData[T]) => void;
-    handleParteChange: (index: number, field: keyof Parte, value: string) => void;
-    addParte: () => void;
-    removeParte: (index: number) => void;
-    handleTemplateChange: (templateId: keyof PeticaoTemplates) => void;
-    handleSaveDraft: () => void;
-}
-
-
-export const usePeticaoStore = create<PeticaoStore>((set) => ({
+export const usePeticaoStore = create<PeticaoStore>((set, get) => ({
     formData: initialFormState,
     showPreview: false,
-    peticaoTemplates: peticaoTemplates,
+    errors: {},
 
-    setFormData: (data) => set({ formData: data }),
+    setFormData: (data) => set((state) => ({ formData: { ...state.formData, ...data } })),
+
     setShowPreview: (show) => set({ showPreview: show }),
 
     handleInputChange: (field, value) =>
         set((state) => ({
             formData: { ...state.formData, [field]: value },
-        })) as any,
+            errors: { ...state.errors, [field]: undefined },
+        })),
 
     handleParteChange: (index, field, value) =>
         set((state) => {
-            const newPartes: Parte[] = [...state.formData.partes]; 
+            const newPartes = [...state.formData.partes];
             newPartes[index] = { ...newPartes[index], [field]: value };
-            return {
-                formData: { ...state.formData, partes: newPartes },
-            };
+            return { formData: { ...state.formData, partes: newPartes } };
         }),
 
     addParte: () =>
@@ -195,8 +114,9 @@ export const usePeticaoStore = create<PeticaoStore>((set) => ({
                 partes: state.formData.partes.filter((_, i) => i !== index),
             },
         })),
+
     handleTemplateChange: (templateId) => {
-        const template = peticaoTemplates[templateId];
+        const template = peticaoTemplates[templateId as keyof PeticaoTemplates];
         if (template) {
             set((state) => ({
                 formData: {
@@ -209,11 +129,29 @@ export const usePeticaoStore = create<PeticaoStore>((set) => ({
             }));
         }
     },
+
     handleSaveDraft: () => {
-        set((state) => {
-            localStorage.setItem("peticaoInicial", JSON.stringify(state.formData));
-            alert("Rascunho salvo com sucesso!");
-            return { formData: initialFormState };
-        });
+        const { formData, validateForm } = get();
+        if (!validateForm()) {
+            alert("Por favor, preencha todos os campos obrigatórios.");
+            return;
+        }
+
+        localStorage.setItem("peticaoInicial", JSON.stringify(formData));
+        alert("Rascunho salvo com sucesso!");
+    },
+
+    validateForm: () => {
+        const { formData } = get();
+        const errors: Partial<Record<keyof FormData, string>> = {};
+
+        if (!formData.modelo.trim()) errors.modelo = "O modelo é obrigatório.";
+        if (!formData.comarca.trim()) errors.comarca = "A comarca é obrigatória.";
+        if (!formData.vara.trim()) errors.vara = "A vara é obrigatória.";
+        if (!formData.requerenteNome.trim()) errors.requerenteNome = "O nome do requerente é obrigatório.";
+        if (!formData.requerenteCPF.trim()) errors.requerenteCPF = "O CPF do requerente é obrigatório.";
+
+        set({ errors });
+        return Object.keys(errors).length === 0;
     },
 }));

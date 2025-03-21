@@ -1,6 +1,21 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt, { compare } from "bcryptjs";
+import bcrypt from "bcryptjs";
+import DOMPurify from "dompurify"; // Biblioteca para sanitização contra XSS
+
+// Função para simular busca no banco de dados (substituir por consulta real)
+async function findUserByEmail(email: string) {
+  const mockUsers = [
+    {
+      id: "1",
+      email: "test@example.com",
+      password: await bcrypt.hash("12345678", 10), // Senha mockada (criptografada)
+      name: "Test User",
+    },
+  ];
+
+  return mockUsers.find((user) => user.email === email);
+}
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -19,25 +34,29 @@ export const authOptions: NextAuthOptions = {
           throw new Error("E-mail e senha são obrigatórios.");
         }
 
-        // Mock de usuário para testes
-        const mockUser = {
-          id: "1",
-          email: "test@example.com",
-          password: await bcrypt.hash("12345678", 10), // Senha mockada (criptografada)
-          name: "Test User",
-        };
+        // Sanitização das entradas para evitar XSS
+        const sanitizedEmail = DOMPurify.sanitize(credentials.email.trim().toLowerCase());
+        const sanitizedPassword = DOMPurify.sanitize(credentials.password);
 
-        // Simula a comparação da senha (bcrypt)
-        const isValid = await compare(credentials.password, mockUser.password);
+        // Busca o usuário no banco de dados (mock ou real)
+        const user = await findUserByEmail(sanitizedEmail);
+
+        if (!user) {
+          throw new Error("Usuário não encontrado.");
+        }
+
+        // Compara a senha fornecida com a senha armazenada
+        const isValid = await bcrypt.compare(sanitizedPassword, user.password);
 
         if (!isValid) {
           throw new Error("Credenciais inválidas.");
         }
 
+        // Retorna os dados do usuário autenticado
         return {
-          id: mockUser.id,
-          email: mockUser.email,
-          name: mockUser.name,
+          id: user.id,
+          email: user.email,
+          name: user.name,
         };
       },
     }),
@@ -49,7 +68,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id; 
+        token.id = user.id; // Adiciona o ID do usuário ao token
       }
       return token;
     },
@@ -59,11 +78,12 @@ export const authOptions: NextAuthOptions = {
           ...session,
           user: {
             ...session.user,
-            id: token.id, 
+            id: token.id, // Adiciona o ID do usuário à sessão
           },
         };
       }
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET, // Chave secreta para assinar tokens JWT
 };

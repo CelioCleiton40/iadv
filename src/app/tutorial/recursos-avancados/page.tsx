@@ -152,7 +152,7 @@ export default function RecursosAvancadosPage() {
 
           <div className="flex justify-between items-center pt-6">
             <Button variant="outline" asChild>
-              <Link href="/tutorial">
+              <Link href="/tutorial rel=noopener noreferrer">
                 <MdArrowBack className="mr-2" />
                 Voltar para Tutoriais
               </Link>

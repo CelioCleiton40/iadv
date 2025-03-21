@@ -1,6 +1,8 @@
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import DOMPurify from "dompurify"; // Biblioteca para sanitização contra XSS
 
+// Esquema de validação com Zod
 const registerSchema = z.object({
   firstName: z.string().trim().min(2, "Nome inválido"),
   lastName: z.string().trim().min(2, "Sobrenome inválido"),
@@ -15,12 +17,20 @@ export async function registerUser(userData: {
   password: string;
 }) {
   try {
+    // Sanitização das entradas para evitar XSS
+    const sanitizedData = {
+      firstName: DOMPurify.sanitize(userData.firstName),
+      lastName: DOMPurify.sanitize(userData.lastName),
+      email: DOMPurify.sanitize(userData.email),
+      password: userData.password,
+    };
+
     // Validação e sanitização
-    const validatedData = registerSchema.parse(userData);
+    const validatedData = registerSchema.parse(sanitizedData);
 
     // Criptografa a senha antes de enviar ao backend
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
-    const sanitizedData = { ...validatedData, password: hashedPassword };
+    const secureData = { ...validatedData, password: hashedPassword };
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // Timeout de 10 segundos
@@ -28,7 +38,7 @@ export async function registerUser(userData: {
     const response = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sanitizedData),
+      body: JSON.stringify(secureData),
       signal: controller.signal,
     });
 
@@ -53,13 +63,16 @@ interface LoginData {
 
 export async function loginUser(credentials: LoginData) {
   try {
+    // Sanitização das entradas para evitar XSS
+    const sanitizedCredentials = {
+      email: DOMPurify.sanitize(credentials.email.trim().toLowerCase()),
+      password: credentials.password,
+    };
+
     const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: credentials.email.trim().toLowerCase(), // Normaliza o e-mail
-        password: credentials.password,
-      }),
+      body: JSON.stringify(sanitizedCredentials),
     });
 
     if (!response.ok) {
@@ -69,7 +82,8 @@ export async function loginUser(credentials: LoginData) {
     const data = await response.json();
 
     if (data.token) {
-      sessionStorage.setItem("auth_token", data.token); // Usa sessionStorage para mais segurança
+      // Usa cookies httpOnly e secure para maior segurança
+      document.cookie = `auth_token=${encodeURIComponent(data.token)}; HttpOnly; Secure; SameSite=Strict; Path=/`;
     }
 
     return data;
@@ -80,15 +94,21 @@ export async function loginUser(credentials: LoginData) {
 
 export async function logoutUser() {
   try {
-    sessionStorage.removeItem("auth_token");
-    // Adicione outras operações necessárias para o logout
+    // Remove o token dos cookies
+    document.cookie = "auth_token=; HttpOnly; Secure; SameSite=Strict; Path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
   } catch (error) {
     console.error("Erro ao realizar logout:", error);
   }
 }
 
 export function getAuthToken() {
-  return sessionStorage.getItem("auth_token");
+  const cookieString = document.cookie;
+  const cookies = cookieString.split("; ").reduce((acc, cookie) => {
+    const [key, value] = cookie.split("=");
+    acc[key] = decodeURIComponent(value);
+    return acc;
+  }, {} as Record<string, string>);
+  return cookies["auth_token"] || null;
 }
 
 export function isAuthenticated() {

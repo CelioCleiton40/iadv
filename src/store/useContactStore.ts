@@ -1,16 +1,28 @@
 import { create } from "zustand";
 import { z } from "zod";
+import DOMPurify from "dompurify"; // Biblioteca para sanitização contra XSS
 
 // Esquema de validação com Zod
-const contactSchema = z.object({
-  name: z.string().min(3, "O nome precisa ter pelo menos 3 caracteres").max(50).trim(),
-  email: z.string().email("Digite um e-mail válido").toLowerCase().trim(),
-  message: z.string().min(10, "A mensagem precisa ter pelo menos 10 caracteres").max(500)
+export const contactSchema = z.object({
+  name: z
+    .string()
+    .min(3, "O nome precisa ter pelo menos 3 caracteres")
+    .max(50, "O nome não pode ter mais de 50 caracteres")
+    .trim(),
+  email: z
+    .string()
+    .email("Digite um e-mail válido")
+    .toLowerCase()
+    .trim(),
+  message: z
+    .string()
+    .min(10, "A mensagem precisa ter pelo menos 10 caracteres")
+    .max(500, "A mensagem não pode ter mais de 500 caracteres")
     .trim()
-    .transform((val) => val.replace(/<\/?[^>]+(>|$)/g, "")), // Remove HTML
+    .transform((val) => DOMPurify.sanitize(val)), // Remove scripts maliciosos
 });
 
-interface ContactState {
+export interface ContactState {
   name: string;
   email: string;
   message: string;
@@ -18,7 +30,7 @@ interface ContactState {
   submissionError: string | null;
   isSubmitting: boolean;
   submitted: boolean;
-  setField: (field: string, value: string) => void;
+  setField: (field: keyof ContactState, value: string) => void;
   submitForm: () => Promise<void>;
   resetForm: () => void;
 }
@@ -34,15 +46,20 @@ export const useContactStore = create<ContactState>((set, get) => ({
 
   // Atualiza os campos e valida os dados
   setField: (field, value) => {
+    const sanitizedValue = DOMPurify.sanitize(value); // Sanitiza a entrada
     const currentState = get();
-    const newState = { ...currentState, [field]: value };
+    const newState = { ...currentState, [field]: sanitizedValue };
 
-    const parsed = contactSchema.safeParse(newState);
+    const parsed = contactSchema.partial().safeParse(newState);
     if (!parsed.success) {
-      set({ submissionError: "Por favor, corrija os erros antes de enviar!" });
-      console.error("Erro de validação:", parsed.error.format());
+      const errors = parsed.error.format();
+      const firstError = Object.values(errors)[0];
+      const errorMessage = typeof firstError === 'object' && '_errors' in firstError 
+        ? firstError._errors[0] 
+        : "Erro de validação.";
+      set({ submissionError: errorMessage });
     } else {
-      set({ [field]: value, submissionError: null });
+      set({ [field]: sanitizedValue, submissionError: null });
     }
   },
 
@@ -52,18 +69,23 @@ export const useContactStore = create<ContactState>((set, get) => ({
     const parsed = contactSchema.safeParse({ name, email, message });
 
     if (!parsed.success) {
-      set({ submissionError: "Preencha corretamente todos os campos!" });
-      console.error("Erro de validação:", parsed.error.format());
+      const errors = parsed.error.format();
+      const firstError = Object.values(errors)[0];
+      const errorMessage = typeof firstError === 'object' && '_errors' in firstError 
+        ? firstError._errors[0] 
+        : "Erro de validação.";
+      set({ submissionError: errorMessage });
       return;
     }
 
     set({ isSubmitting: true, submissionError: null });
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulando API
-      alert("Mensagem enviada com sucesso!");
+      // Simulação de envio para API
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simula chamada assíncrona
       set({ submitted: true });
     } catch (error) {
+      console.error("Erro ao enviar mensagem:", error);
       set({ submissionError: "Erro ao enviar mensagem!" });
     } finally {
       set({ isSubmitting: false });

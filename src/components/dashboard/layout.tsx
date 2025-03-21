@@ -109,7 +109,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           >
             <MdMenu className="h-5 w-5" />
           </Button>
-          <span className="text-lg font-bold">iAdv</span>
+          <span className="text-lg font-bold">iAdv Manager</span>
         </div>
 
         <div className="container mx-auto px-4 py-8">{children}</div>

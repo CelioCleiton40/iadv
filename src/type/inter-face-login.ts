@@ -10,9 +10,9 @@ export interface LoginCredentials {
 }
 
 export interface AuthState {
-  user: User | null;
-  isLoading: boolean;
-  error: string | null;
-  login: (credentials: LoginCredentials) => Promise<void>;
-  logout: () => void;
+  user: User | null; // Usuário autenticado ou null
+  isLoading: boolean; // Indica se o processo de autenticação está em andamento
+  error: string | null; // Mensagem de erro, se houver
+  login: (credentials: LoginCredentials) => Promise<void>; // Função de login
+  logout: () => void; // Função de logout
 }
