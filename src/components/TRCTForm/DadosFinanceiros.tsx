@@ -62,6 +62,14 @@ export const DadosFinanceiros: React.FC<DadosFinanceirosProps> = ({ formData, ha
                         onChange={(e) => handleInputChange('outrasVerbas', parseFloat(e.target.value) || 0)}
                     />
                 </div>
+                // Adicione isso para cada campo financeiro
+                <Input
+                type="number"
+                value={formData.saldoSalario || ''}
+                onChange={(e) => handleInputChange('saldoSalario', Number(e.target.value))}
+                min="0"
+                step="0.01"
+                />
             </div>
         </div>
     );
