@@ -8,23 +8,29 @@ const LOGIN_ROUTE = "/login";
 
 export async function middleware(request: NextRequest) {
   try {
-    // Obtém o token JWT do usuário
     const token = await getToken({
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
+      // Adiciona suporte para migração de sessão
+      cookieName: process.env.NODE_ENV === 'production' 
+        ? '__Secure-next-auth.session-token' 
+        : 'next-auth.session-token'
     });
+
+    // Verificação adicional do token
+    const isValidToken = token && typeof token === 'object' && 'email' in token;
 
     // Verifica se a rota atual é /dashboard ou /login
     const isDashboardRoute = request.nextUrl.pathname.startsWith(DASHBOARD_ROUTE);
     const isLoginRoute = request.nextUrl.pathname.startsWith(LOGIN_ROUTE);
 
     // Bloqueia acesso ao /dashboard sem token
-    if (isDashboardRoute && !token) {
+    // Atualiza a verificação para usar isValidToken
+    if (isDashboardRoute && !isValidToken) {
       return NextResponse.redirect(new URL(LOGIN_ROUTE, request.url));
     }
 
-    // Evita que usuários autenticados acessem /login
-    if (isLoginRoute && token) {
+    if (isLoginRoute && isValidToken) {
       return NextResponse.redirect(new URL(DASHBOARD_ROUTE, request.url));
     }
 
@@ -40,10 +46,11 @@ export async function middleware(request: NextRequest) {
     response.headers.set("Cache-Control", "no-store, max-age=0");
     return response;
   } catch (error) {
-    console.error("Erro no middleware:", error);
-
-    // Redireciona para uma página de erro genérica em caso de falha crítica
-    return NextResponse.redirect(new URL("/error", request.url));
+    // Limpa a sessão corrompida
+    const response = NextResponse.redirect(new URL(LOGIN_ROUTE, request.url));
+    response.cookies.delete('next-auth.session-token');
+    response.cookies.delete('__Secure-next-auth.session-token');
+    return response;
   }
 }
 

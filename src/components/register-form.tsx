@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -20,13 +20,18 @@ import LawImage from "../../public/assets/law-image.jpg";
 import { FiUser, FiMail, FiLock, FiArrowRight } from "react-icons/fi";
 import { motion } from "framer-motion";
 
-// Esquema de validação Zod
 const registerSchema = z
   .object({
     firstName: z.string().min(2, "O nome deve ter pelo menos 2 caracteres"),
     lastName: z.string().min(2, "O sobrenome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Insira um e-mail válido"),
-    password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
+    password: z
+      .string()
+      .min(8, "A senha deve ter pelo menos 8 caracteres")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        "A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais"
+      ),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {

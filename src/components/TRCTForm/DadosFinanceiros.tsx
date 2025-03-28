@@ -1,4 +1,4 @@
-"use client"
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TRCTFormData } from "@/type/interfaces";
@@ -62,7 +62,6 @@ export const DadosFinanceiros: React.FC<DadosFinanceirosProps> = ({ formData, ha
                         onChange={(e) => handleInputChange('outrasVerbas', parseFloat(e.target.value) || 0)}
                     />
                 </div>
-                // Adicione isso para cada campo financeiro
                 <Input
                 type="number"
                 value={formData.saldoSalario || ''}

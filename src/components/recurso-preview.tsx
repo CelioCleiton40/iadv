@@ -1,4 +1,4 @@
-"use client";
+
 
 import {
   Dialog,
@@ -13,7 +13,7 @@ import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { toast } from "sonner";
 import { useStore } from "@/store/store"; // Importando Zustand
-import { RecursoPreviewProps } from "@/type/inter-face-recursos";
+import { RecursoPreview } from "@/type/inter-face-recurso";
 
 
 const tiposRecurso = {
@@ -43,7 +43,12 @@ const tiposRecurso = {
   },
 };
 
-export const RecursoPreview: React.FC<RecursoPreviewProps> = ({
+const RecursoPreview: React.FC<{
+  formData: RecursoPreview;
+  showPreview: boolean;
+  setShowPreview: (show: boolean) => void;
+  handleSaveDraft: () => void;
+}> = ({
   formData,
   showPreview,
   setShowPreview,
@@ -124,7 +129,7 @@ export const RecursoPreview: React.FC<RecursoPreviewProps> = ({
               </p>
             </div>
 
-            {formData.razoes.map((razao, index) => (
+            {formData.razoes.map((razao: { titulo: string; conteudo: string }, index: number) => (
               <div key={index} className="space-y-4">
                 <h2 className="font-bold uppercase">
                   {index + 1}. {razao.titulo || `RAZÃO RECURSAL ${index + 1}`}

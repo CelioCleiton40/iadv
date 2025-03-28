@@ -1,4 +1,4 @@
-"use client";
+
 import {
     Dialog,
     DialogContent,
@@ -84,7 +84,7 @@ export const PreviewContestacao: React.FC<PreviewContestacaoProps> = ({ formData
                             </p>
 
 
-                            {formData.argumentos.map((argumento, index) => (
+                            {formData.argumentos?.map((argumento, index) => (
                                 <div key={index} className="mb-6">
                                     {argumento.titulo && (
                                         <h3 className="font-semibold mb-2">{argumento.titulo}</h3>
