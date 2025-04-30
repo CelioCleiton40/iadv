@@ -9,7 +9,6 @@ import {
   MdPeople,
   MdFolder,
   MdCalendarMonth,
-  MdAttachMoney,
   MdDescription,
   MdSettings,
   MdMenu,

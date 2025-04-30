@@ -1,15 +1,9 @@
-import { z } from "zod";
 import bcrypt from "bcryptjs";
-import DOMPurify from "dompurify"; // Biblioteca para sanitização contra XSS
+import DOMPurify from "dompurify";
+import axios from "axios";
+import { registerSchema } from "@/lib/validationSchemas";
 
-// Esquema de validação com Zod
-const registerSchema = z.object({
-  firstName: z.string().trim().min(2, "Nome inválido"),
-  lastName: z.string().trim().min(2, "Sobrenome inválido"),
-  email: z.string().trim().toLowerCase().email("E-mail inválido"),
-  password: z.string().min(8, "Senha deve ter pelo menos 8 caracteres"),
-});
-
+// REGISTRAR USUÁRIO
 export async function registerUser(userData: {
   firstName: string;
   lastName: string;
@@ -17,45 +11,39 @@ export async function registerUser(userData: {
   password: string;
 }) {
   try {
-    // Sanitização das entradas para evitar XSS
     const sanitizedData = {
       firstName: DOMPurify.sanitize(userData.firstName),
       lastName: DOMPurify.sanitize(userData.lastName),
       email: DOMPurify.sanitize(userData.email),
       password: userData.password,
+      confirmPassword: userData.password,
     };
 
-    // Validação e sanitização
     const validatedData = registerSchema.parse(sanitizedData);
-
-    // Criptografa a senha antes de enviar ao backend
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
     const secureData = { ...validatedData, password: hashedPassword };
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // Timeout de 10 segundos
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(secureData),
-      signal: controller.signal,
-    });
+    const response = await axios.post(
+      "http://localhost:3001/api/users",
+      secureData,
+      {
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+      }
+    );
 
     clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Erro ao registrar usuário");
-    }
-
-    return await response.json();
-  } catch (error) {
+    return response.data;
+  } catch (error: any) {
     console.error("Erro no registro:", error);
-    throw error;
+    throw new Error(error.response?.data?.message || "Erro ao registrar usuário");
   }
 }
 
+// LOGIN
 interface LoginData {
   email: string;
   password: string;
@@ -63,54 +51,50 @@ interface LoginData {
 
 export async function loginUser(credentials: LoginData) {
   try {
-    // Sanitização das entradas para evitar XSS
     const sanitizedCredentials = {
       email: DOMPurify.sanitize(credentials.email.trim().toLowerCase()),
       password: credentials.password,
     };
 
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sanitizedCredentials),
+    const response = await axios.post(
+      "http://localhost:3001/api/auth/login",
+      sanitizedCredentials,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const { token, user } = response.data;
+
+    // Armazena o token no localStorage
+    localStorage.setItem("token", token);
+
+    return user;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Erro ao realizar login");
+  }
+}
+
+// LOGOUT
+export function logoutUser() {
+  localStorage.removeItem("token");
+}
+
+// CHECA AUTENTICAÇÃO
+export async function isAuthenticated(): Promise<boolean> {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) return false;
+
+    const response = await axios.get("http://localhost:3001/api/auth/check", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
-    if (!response.ok) {
-      throw new Error("Credenciais inválidas");
-    }
-
-    const data = await response.json();
-
-    if (data.token) {
-      // Usa cookies httpOnly e secure para maior segurança
-      document.cookie = `auth_token=${encodeURIComponent(data.token)}; HttpOnly; Secure; SameSite=Strict; Path=/`;
-    }
-
-    return data;
-  } catch (error) {
-    throw new Error("Erro ao realizar login");
+    return response.status === 200;
+  } catch {
+    return false;
   }
-}
-
-export async function logoutUser() {
-  try {
-    // Remove o token dos cookies
-    document.cookie = "auth_token=; HttpOnly; Secure; SameSite=Strict; Path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-  } catch (error) {
-    console.error("Erro ao realizar logout:", error);
-  }
-}
-
-export function getAuthToken() {
-  const cookieString = document.cookie;
-  const cookies = cookieString.split("; ").reduce((acc, cookie) => {
-    const [key, value] = cookie.split("=");
-    acc[key] = decodeURIComponent(value);
-    return acc;
-  }, {} as Record<string, string>);
-  return cookies["auth_token"] || null;
-}
-
-export function isAuthenticated() {
-  return !!getAuthToken();
 }

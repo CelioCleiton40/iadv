@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -32,13 +32,14 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
   // Função para lidar com o login
   const onSubmit = async (data: LoginFormData) => {
+  
     try {
       setIsLoading(true);
 
       // Sanitização das entradas
       const sanitizedData = {
         email: DOMPurify.sanitize(data.email),
-        password: data.password, // Backend deve criptografar a senha
+        password: DOMPurify.sanitize(data.password), // Backend deve criptografar a senha
       };
 
       // Autenticação com Next-Auth
