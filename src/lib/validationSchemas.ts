@@ -45,17 +45,18 @@ export const registerSchema = z
       }),
     password: z
       .string()
-      .min(10, "A senha deve ter pelo menos 10 caracteres") // Aumentado o mínimo para 10 caracteres
+      .min(10, "A senha deve ter pelo menos 10 caracteres")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
         "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial"
       ),
-    confirmPassword: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.password, {
     message: "As senhas não coincidem",
-    path: ["confirmPassword"],
+    path: ["password"], // Exibe o erro no campo 'password'
   });
+
+
 
 // Types inferidos dos schemas
 export type LoginFormData = z.infer<typeof loginSchema>;

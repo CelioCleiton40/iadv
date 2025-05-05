@@ -14,14 +14,30 @@ export const authOptions: NextAuthOptions = {
           throw new Error("E-mail e senha são obrigatórios.");
         }
 
-        // Simulação de um usuário válido (substitua por lógica real de autenticação)
-        const user = { id: "1", name: "Usuário Teste", email: credentials.email };
+        try {
+          // Enviando dados de login para o backend
+          const response = await fetch("http://localhost:3001/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          });
 
-        if (credentials.password !== "12345678") {
-          throw new Error("Credenciais inválidas.");
+          const user = await response.json();
+
+          // Se a resposta for falha (erro do backend)
+          if (!response.ok) {
+            throw new Error(user.message || "Credenciais inválidas.");
+          }
+
+          // Retorna o usuário obtido do backend
+          return user;
+        } catch (err: any) {
+          console.error("Erro ao autenticar com backend:", err);
+          throw new Error("Erro ao autenticar. Tente novamente.");
         }
-
-        return user;
       }
     })
   ],

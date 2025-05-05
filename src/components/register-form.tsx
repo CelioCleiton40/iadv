@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { registerUser } from "@/services/auth"; // <- service de autenticação
+import { registerUser } from "@/services/auth"; 
 import { toast } from "sonner";
 import DOMPurify from "dompurify";
 import Image from "next/image";
@@ -39,24 +39,33 @@ export function RegisterForm({
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     try {
       setIsLoading(true);
-
-      // Sanitização das entradas
-      const sanitizedData = {
+  
+      // Preparando os dados conforme o esperado pelo backend
+      const payload = {
         firstName: DOMPurify.sanitize(data.firstName.trim()),
         lastName: DOMPurify.sanitize(data.lastName.trim()),
         email: DOMPurify.sanitize(data.email.trim().toLowerCase()),
         password: data.password,
-        confirmPassword: data.confirmPassword,
       };
-
+  
       // Chamada ao serviço de registro
-      await registerUser(sanitizedData);
-
-      // Feedback positivo
-      toast.success("Cadastro realizado com sucesso!");
-
-      // Redireciona para dashboard ou perfil
-      router.push("/dashboard/perfil");
+      const response = await registerUser(payload);
+  
+      // Verifica se a resposta tem sucesso
+      if (response?.token) {
+        // Salva o token no localStorage
+        localStorage.setItem("token", response.token);
+  
+        // Feedback positivo
+        toast.success("Cadastro realizado com sucesso!");
+  
+        // Redireciona para o perfil ou dashboard
+        router.push("/dashboard/perfil");
+      } else {
+        // Caso não tenha token ou falha no serviço
+        toast.error("Erro ao realizar cadastro. Tente novamente.");
+      }
+  
     } catch (error: any) {
       console.error("Erro ao registrar:", error);
       toast.error(error.message || "Erro ao realizar cadastro. Tente novamente.");
@@ -64,6 +73,7 @@ export function RegisterForm({
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div
@@ -191,14 +201,14 @@ export function RegisterForm({
                   <div className="relative">
                     <FiLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                     <Input
-                      id="confirmPassword"
+                      id="confirmpassword"
                       type="password"
-                      {...register("confirmPassword")}
+                      {...register("password")}
                       className="pl-10 h-12 rounded-lg border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 transition-all"
                     />
                   </div>
-                  {errors.confirmPassword && (
-                    <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
+                  {errors.password && (
+                    <p className="text-red-500 text-sm">{errors.password.message}</p>
                   )}
                 </div>
 
