@@ -73,7 +73,6 @@ export function RegisterForm({
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div

@@ -3,11 +3,12 @@
 import { Header } from "@/components/header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MdSave, MdNotifications, MdPalette, MdLanguage, MdSecurity } from "react-icons/md";
+import { MdSave } from "react-icons/md";
+import TabsGeral from "@/components/config/TabsGeral";
+import TabsNotificacoes from "@/components/config/TabsNotificacoes";
+import TabsAparencia from "@/components/config/TabsAparencia";
+import TabsPrivacidade from "@/components/config/TabsPrivacidade";
 
 export default function Configuracoes() {
   return (
@@ -24,7 +25,7 @@ export default function Configuracoes() {
         </div>
 
         <div className="grid gap-8">
-          <Card className="p-6">
+          <Card className="p-1">
             <Tabs defaultValue="geral" className="w-full">
               <TabsList className="grid w-full grid-cols-4 mb-6">
                 <TabsTrigger value="geral">Geral</TabsTrigger>
@@ -34,149 +35,18 @@ export default function Configuracoes() {
               </TabsList>
 
               <TabsContent value="geral">
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label>Idioma do Sistema</Label>
-                    <Select defaultValue="pt-BR">
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
-                        <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="es">Español</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Fuso Horário</Label>
-                    <Select defaultValue="america-sp">
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="america-sp">América/São Paulo</SelectItem>
-                        <SelectItem value="america-rj">América/Rio de Janeiro</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Backup Automático</Label>
-                      <p className="text-sm text-slate-600">Realizar backup diário dos dados</p>
-                    </div>
-                    <Switch />
-                  </div>
-                </div>
+                <TabsGeral />
               </TabsContent>
-
               <TabsContent value="notificacoes">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Notificações por Email</Label>
-                      <p className="text-sm text-slate-600">Receber alertas por email</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Notificações Push</Label>
-                      <p className="text-sm text-slate-600">Receber notificações no navegador</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Alertas de Prazos</Label>
-                      <p className="text-sm text-slate-600">Notificar sobre prazos próximos</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Antecedência dos Alertas</Label>
-                    <Select defaultValue="3">
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">1 dia antes</SelectItem>
-                        <SelectItem value="3">3 dias antes</SelectItem>
-                        <SelectItem value="7">7 dias antes</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
+                <TabsNotificacoes />
               </TabsContent>
-
               <TabsContent value="aparencia">
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label>Tema</Label>
-                    <Select defaultValue="system">
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="light">Claro</SelectItem>
-                        <SelectItem value="dark">Escuro</SelectItem>
-                        <SelectItem value="system">Sistema</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Modo Compacto</Label>
-                      <p className="text-sm text-slate-600">Reduzir espaçamento entre elementos</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Animações</Label>
-                      <p className="text-sm text-slate-600">Habilitar animações na interface</p>
-                    </div>
-                    <Switch />
-                  </div>
-                </div>
+                <TabsAparencia />
               </TabsContent>
-
               <TabsContent value="privacidade">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Autenticação em Duas Etapas</Label>
-                      <p className="text-sm text-slate-600">Aumentar a segurança da conta</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Histórico de Atividades</Label>
-                      <p className="text-sm text-slate-600">Registrar ações no sistema</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Compartilhamento de Dados</Label>
-                      <p className="text-sm text-slate-600">Permitir análise de uso anônima</p>
-                    </div>
-                    <Switch />
-                  </div>
-                </div>
+                <TabsPrivacidade />
               </TabsContent>
             </Tabs>
-
             <div className="mt-6 flex justify-end">
               <Button>
                 <MdSave className="mr-2 h-4 w-4" /> Salvar Configurações

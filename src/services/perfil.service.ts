@@ -136,36 +136,3 @@ export const deletePerfilCompleto = async (): Promise<void> => {
     throw new Error(mensagem);
   }
 };
-
-// Exemplo de como sua interface Perfil poderia ser (coloque em @/type/inter-face-perfil.ts):
-/*
-export interface Perfil {
-  id: string | number; // ou o tipo do seu ID
-  nome: string;
-  email: string;
-  // Outros campos do perfil
-}
-*/
-
-// Exemplo de como seu apiClient poderia ser (coloque em @/lib/axiosConfig.ts):
-/*
-import axios from 'axios';
-
-const apiClient = axios.create({
-  baseURL: 'URL_DA_SUA_API_AQUI', // Ex: 'http://localhost:3000/api'
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Você pode adicionar interceptors para tratar tokens de autenticação, etc.
-// apiClient.interceptors.request.use(config => {
-//   const token = localStorage.getItem('authToken');
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
-
-export default apiClient;
-*/
