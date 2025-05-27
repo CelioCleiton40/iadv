@@ -11,9 +11,9 @@ import {
   MdPieChart,
 } from "react-icons/md";
 import Link from "next/link";
-import { EmitirNotaDialog } from "@/components/financeiro/emitir-nota-dialog";
-import { RelatorioDialog } from "@/components/financeiro/relatorio-dialog";
-import { FechamentoCaixaDialog } from "@/components/financeiro/fechamento-caixa-dialog";
+import { EmitirNotaDialog } from "@/components/dashboard/financeiro/emitir-nota-dialog";
+import { RelatorioDialog } from "@/components/dashboard/financeiro/relatorio-dialog";
+import { FechamentoCaixaDialog } from "@/components/dashboard/financeiro/fechamento-caixa-dialog";
 
 export default function Financeiro() {
   return (

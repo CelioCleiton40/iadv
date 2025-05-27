@@ -3,6 +3,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/dashboard/layout";
+import ConsultaProcessual from "@/components/dashboard/ConsultaProcessual";
 import {
   MdTrendingUp,
   MdAccessTime,
@@ -21,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import DOMPurify from 'dompurify';
-import { DetalhesCompromissoDialog } from "@/components/agenda/detalhes-compromisso-dialog";
+import { DetalhesCompromissoDialog } from "@/components/dashboard/agenda/detalhes-compromisso-dialog";
 
 // Função para validar URLs
 const safeHref = (url: string): string => {
@@ -174,6 +175,10 @@ export default function DashboardPage() {
               R$ 45K
             </p>
           </Card>
+        </section>
+        {/* Consulta Processual */}
+        <section className="mb-8">
+          <ConsultaProcessual />
         </section>
         {/* Recent Cases and Calendar Section */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">

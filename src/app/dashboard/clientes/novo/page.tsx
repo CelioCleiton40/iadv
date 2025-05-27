@@ -16,7 +16,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MdSave, MdArrowBack, MdVisibility, MdPrint } from "react-icons/md";
 import Link from "next/link";
-import useClienteStore from "@/store/useClienteStore"; // Importando a loja
+import { useClienteStore } from "@/store/useClienteStore"; // Importando a loja
 import { toast } from "sonner";
 import { useState } from "react";
 import {

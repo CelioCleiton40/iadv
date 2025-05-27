@@ -7,10 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { MdGavel } from "react-icons/md";
 import { Juiz } from "@/type/inter-juiz"; // Importe a interface Juiz
 
-import { JudgeStatsTabContent } from '@/components/judge-tabs-content/judge-stats-tab-content'; // Importe os sub-componentes das Tabs
-import { JudgeTendenciesTabContent } from '@/components/judge-tabs-content/judge-tendencies-tab-content';
-import { JudgeJurisprudenceTabContent } from '@/components/judge-tabs-content/judge-jurisprudence-tab-content';
-import { JudgeStrategiesTabContent } from '@/components/judge-tabs-content/judge-strategies-tab-content';
+import { JudgeStatsTabContent } from '@/components/dashboard/judge-tabs-content/judge-stats-tab-content'; // Importe os sub-componentes das Tabs
+import { JudgeTendenciesTabContent } from '@/components/dashboard/judge-tabs-content/judge-tendencies-tab-content';
+import { JudgeJurisprudenceTabContent } from '@/components/dashboard/judge-tabs-content/judge-jurisprudence-tab-content';
+import { JudgeStrategiesTabContent } from '@/components/dashboard/judge-tabs-content/judge-strategies-tab-content';
 
 
 interface JudgeCardProps {

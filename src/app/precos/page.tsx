@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MdCheck } from "react-icons/md";
-
+import Link from "next/link";
 const plans = [
   {
     name: "Básico",
@@ -144,12 +144,13 @@ export default function Precos() {
             <p className="text-slate-600 dark:text-slate-400 mb-4">
               Precisa de um plano personalizado para sua empresa?
             </p>
-            <Button
-              variant="outline"
-              className="border-blue-600 text-blue-600 hover:bg-blue-50"
+            <Link
+              href="/contato"
+              rel="noopener noreferrer"
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Entre em Contato
-            </Button>
+            </Link>
           </motion.div>
         </div>
       </main>

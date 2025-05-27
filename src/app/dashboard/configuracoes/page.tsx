@@ -5,10 +5,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MdSave } from "react-icons/md";
-import TabsGeral from "@/components/config/TabsGeral";
-import TabsNotificacoes from "@/components/config/TabsNotificacoes";
-import TabsAparencia from "@/components/config/TabsAparencia";
-import TabsPrivacidade from "@/components/config/TabsPrivacidade";
+import TabsGeral from "@/components/dashboard/config/TabsGeral";
+import TabsNotificacoes from "@/components/dashboard/config/TabsNotificacoes";
+import TabsAparencia from "@/components/dashboard/config/TabsAparencia";
+import TabsPrivacidade from "@/components/dashboard/config/TabsPrivacidade";
 
 export default function Configuracoes() {
   return (
@@ -48,9 +48,6 @@ export default function Configuracoes() {
               </TabsContent>
             </Tabs>
             <div className="mt-6 flex justify-end">
-              <Button>
-                <MdSave className="mr-2 h-4 w-4" /> Salvar Configurações
-              </Button>
             </div>
           </Card>
         </div>

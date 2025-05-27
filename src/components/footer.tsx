@@ -1,8 +1,17 @@
 import Link from "next/link";
-import { MdInfo, MdArticle, MdQuestionAnswer, MdPhone, MdLocationOn } from "react-icons/md";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
 
 export function Footer() {
+
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
+  if (year === null) return null;
+
   return (
     <footer className="w-full border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
       <div className="container mx-auto px-4 py-8">
@@ -43,7 +52,7 @@ export function Footer() {
         </div>
         
         <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400">
-          <p>© {new Date().getFullYear()} iAdv Manager. Todos os direitos reservados.</p>
+        <p>© {year} iAdv Manager. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

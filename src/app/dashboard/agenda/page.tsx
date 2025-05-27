@@ -3,8 +3,8 @@
 import { Header } from "@/components/header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { NovoCompromissoDialog } from "@/components/agenda/novo-compromisso-dialog";
-import { DetalhesCompromissoDialog } from "@/components/agenda/detalhes-compromisso-dialog";
+import { NovoCompromissoDialog } from "@/components/dashboard/agenda/novo-compromisso-dialog";
+import { DetalhesCompromissoDialog } from "@/components/dashboard/agenda/detalhes-compromisso-dialog";
 import {
   Select,
   SelectContent,

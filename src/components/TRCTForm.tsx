@@ -8,11 +8,11 @@ import { TRCTFormData, motivosRescisao } from "@/type/interfaces";
 import { formatCurrency } from "@/utils/formatters";
 
 // Componentes do formulário
-import { DadosEmpregador } from "@/components/TRCTForm/DadosEmpregador";
-import { DadosTrabalhador } from "@/components/TRCTForm/DadosTrabalhador";
-import { DadosContrato } from "@/components/TRCTForm/DadosContrato";
-import { DadosFinanceiros } from "@/components/TRCTForm/DadosFinanceiros";
-import { Descontos } from "@/components/TRCTForm/Descontos";
+import { DadosEmpregador } from "@/components/dashboard/TRCTForm/DadosEmpregador";
+import { DadosTrabalhador } from "@/components/dashboard/TRCTForm/DadosTrabalhador";
+import { DadosContrato } from "@/components/dashboard/TRCTForm/DadosContrato";
+import { DadosFinanceiros } from "@/components/dashboard/TRCTForm/DadosFinanceiros";
+import { Descontos } from "@/components/dashboard/TRCTForm/Descontos";
 
 interface TRCTFormProps {
   formData: TRCTFormData;

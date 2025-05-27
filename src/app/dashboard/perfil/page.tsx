@@ -1,9 +1,9 @@
 "use client";
 
 import { Header } from "@/components/header";
-import { PerfilHeader } from "@/components/perfil/PerfilHeader";
-import { PerfilSidebar } from "@/components/perfil/PerfilSidebar";
-import { PerfilContent } from "@/components/perfil/PerfilContent";
+import { PerfilHeader } from "@/components/dashboard/perfil/PerfilHeader";
+import { PerfilSidebar } from "@/components/dashboard/perfil/PerfilSidebar";
+import { PerfilContent } from "@/components/dashboard/perfil/PerfilContent";
 import { usePerfilStore } from "@/store/perfilStore";
 import { useEffect } from "react";
 
