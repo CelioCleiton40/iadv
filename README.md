@@ -104,4 +104,4 @@ Contribuições são sempre bem-vindas! Por favor, leia o CONTRIBUTING.md primei
 ## Suporte 📞
 Para suporte, envie um email para cleitonfreelance@gmail.com ou abra uma issue no GitHub.
 
-Desenvolvido com ❤️ por Célio Cleiton | IDE Trae
+Desenvolvido por Célio Cleiton.
